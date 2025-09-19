@@ -12,6 +12,13 @@ import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
+import TutorDashboard from "./pages/tutor/TutorDashboard";
+import ParentDashboard from "./pages/parent/ParentDashboard";
+import StudentClasses from "./pages/student/StudentClasses";
+import StudentAssignments from "./pages/student/StudentAssignments";
+import StudentGrades from "./pages/student/StudentGrades";
+import StudentResources from "./pages/student/StudentResources";
+import StudentMessaging from "./pages/student/StudentMessaging";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,9 +47,46 @@ function AppRoutes() {
             </ProtectedRoute>
           } />
           
-          {/* Tutor & Parent routes would go here */}
-          <Route path="/tutor" element={<div className="p-6"><h1 className="text-2xl font-bold">Tutor Dashboard - Coming Soon</h1></div>} />
-          <Route path="/parent" element={<div className="p-6"><h1 className="text-2xl font-bold">Parent Dashboard - Coming Soon</h1></div>} />
+          {/* Tutor Routes */}
+          <Route path="/tutor" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorDashboard />
+            </ProtectedRoute>
+          } />
+          
+          {/* Parent Routes */}
+          <Route path="/parent" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentDashboard />
+            </ProtectedRoute>
+          } />
+          
+          {/* Student Sub-routes */}
+          <Route path="/student/classes" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentClasses />
+            </ProtectedRoute>
+          } />
+          <Route path="/student/assignments" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentAssignments />
+            </ProtectedRoute>
+          } />
+          <Route path="/student/grades" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentGrades />
+            </ProtectedRoute>
+          } />
+          <Route path="/student/resources" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentResources />
+            </ProtectedRoute>
+          } />
+          <Route path="/student/messaging" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentMessaging />
+            </ProtectedRoute>
+          } />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
