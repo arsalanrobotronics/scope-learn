@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import {
   Sidebar,
@@ -31,6 +31,7 @@ export function AppSidebar() {
   const session = useSession();
   const { logout } = useAuthStore();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (!session) return null;
 
@@ -163,11 +164,11 @@ export function AppSidebar() {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <User className="mr-2 h-4 w-4" />
                   Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <Settings className="mr-2 h-4 w-4" />
                   Settings
                 </DropdownMenuItem>

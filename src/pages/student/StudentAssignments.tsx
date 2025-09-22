@@ -1,10 +1,18 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Clock, Calendar, CheckCircle, AlertCircle } from "lucide-react";
+import { AskQuestionModal } from '@/components/modals/AskQuestionModal';
+import { useToast } from '@/hooks/use-toast';
 
 const StudentAssignments = () => {
+  const { toast } = useToast();
+  const [questionModal, setQuestionModal] = useState<{ isOpen: boolean; assignment: any }>({
+    isOpen: false,
+    assignment: null,
+  });
   const assignments = [
     {
       id: "1",
@@ -199,13 +207,13 @@ const StudentAssignments = () => {
                     </div>
 
                     <div className="flex gap-2">
-                      <Button size="sm">
+                      <Button size="sm" onClick={() => toast({ title: "Assignment Submitted", description: "Your assignment has been submitted successfully." })}>
                         Submit Assignment
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => toast({ title: "Assignment Details", description: `Opening details for ${assignment.title}...` })}>
                         View Details
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => setQuestionModal({ isOpen: true, assignment })}>
                         Ask Question
                       </Button>
                     </div>
@@ -261,10 +269,10 @@ const StudentAssignments = () => {
                   )}
 
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Viewing Submission", description: `Opening submission for ${assignment.title}...` })}>
                       View Submission
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Downloading Feedback", description: `Downloading feedback for ${assignment.title}...` })}>
                       Download Feedback
                     </Button>
                   </div>
@@ -316,6 +324,14 @@ const StudentAssignments = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Question Modal */}
+      <AskQuestionModal
+        isOpen={questionModal.isOpen}
+        onClose={() => setQuestionModal({ isOpen: false, assignment: null })}
+        assignmentTitle={questionModal.assignment?.title}
+        className={questionModal.assignment?.class}
+      />
     </div>
   );
 };

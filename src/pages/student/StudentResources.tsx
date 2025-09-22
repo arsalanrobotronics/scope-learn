@@ -1,11 +1,31 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Library, Download, Search, FileText, Video, Link, BookOpen, Star } from "lucide-react";
+import { useFavoritesStore } from '@/lib/store/favoritesStore';
+import { useToast } from '@/hooks/use-toast';
 
 const StudentResources = () => {
+  const { toast } = useToast();
+  const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
+  
+  const handleSaveToFavorites = (resource: any) => {
+    if (isFavorite(resource.id)) {
+      removeFromFavorites(resource.id);
+      toast({ title: "Removed from Favorites", description: `${resource.title} removed from favorites.` });
+    } else {
+      addToFavorites({
+        id: resource.id,
+        title: resource.title,
+        type: resource.type,
+        category: resource.category,
+      });
+      toast({ title: "Added to Favorites", description: `${resource.title} saved to favorites.` });
+    }
+  };
   const resources = [
     {
       id: "1",
@@ -230,9 +250,9 @@ const StudentResources = () => {
                       <Download className="mr-2 h-4 w-4" />
                       {resource.type === 'link' ? 'Open Link' : 'Download'}
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Star className="mr-2 h-4 w-4" />
-                      Save to Favorites
+                    <Button variant="outline" size="sm" onClick={() => handleSaveToFavorites(resource)}>
+                      <Star className={`mr-2 h-4 w-4 ${isFavorite(resource.id) ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+                      {isFavorite(resource.id) ? 'Remove Favorite' : 'Save to Favorites'}
                     </Button>
                     <Button variant="outline" size="sm">
                       Preview
@@ -376,20 +396,45 @@ const StudentResources = () => {
         </TabsContent>
 
         <TabsContent value="favorites" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>No Favorites Yet</CardTitle>
-              <CardDescription>
-                Save resources to your favorites for quick access later.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="outline">
-                <Star className="mr-2 h-4 w-4" />
-                Browse Resources
-              </Button>
-            </CardContent>
-          </Card>
+          {favorites.length === 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>No Favorites Yet</CardTitle>
+                <CardDescription>
+                  Save resources to your favorites for quick access later.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="outline">
+                  <Star className="mr-2 h-4 w-4" />
+                  Browse Resources
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-4">
+              {favorites.map((favorite) => (
+                <Card key={favorite.id}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>{favorite.title}</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSaveToFavorites(favorite)}
+                      >
+                        <Star className="mr-2 h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        Remove
+                      </Button>
+                    </CardTitle>
+                    <CardDescription>
+                      {favorite.category} • Added {new Date(favorite.addedAt).toLocaleDateString()}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
       </Tabs>
 
@@ -434,7 +479,7 @@ const StudentResources = () => {
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{favorites.length}</div>
             <p className="text-xs text-muted-foreground">Saved resources</p>
           </CardContent>
         </Card>

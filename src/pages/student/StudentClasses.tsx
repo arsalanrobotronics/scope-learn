@@ -1,9 +1,28 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Calendar, Clock, Users, ExternalLink } from "lucide-react";
+import { ViewMaterialsModal } from '@/components/modals/ViewMaterialsModal';
+import { useToast } from '@/hooks/use-toast';
 
 const StudentClasses = () => {
+  const { toast } = useToast();
+  const [materialsModal, setMaterialsModal] = useState<{ isOpen: boolean; className: string }>({
+    isOpen: false,
+    className: '',
+  });
+  
+  const handleViewMaterials = (className: string) => {
+    setMaterialsModal({ isOpen: true, className });
+  };
+  
+  const handleClassSchedule = (className: string) => {
+    toast({
+      title: "Class Schedule",
+      description: `Opening detailed schedule for ${className}...`,
+    });
+  };
   const enrolledClasses = [
     {
       id: "1",
@@ -168,10 +187,10 @@ const StudentClasses = () => {
                     Join Class
                   </a>
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => handleViewMaterials(classItem.name)}>
                   View Materials
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => handleClassSchedule(classItem.name)}>
                   Class Schedule
                 </Button>
               </div>
@@ -217,6 +236,13 @@ const StudentClasses = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modals */}
+      <ViewMaterialsModal
+        isOpen={materialsModal.isOpen}
+        onClose={() => setMaterialsModal({ isOpen: false, className: '' })}
+        className={materialsModal.className}
+      />
     </div>
   );
 };

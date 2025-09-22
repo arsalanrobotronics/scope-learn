@@ -1,11 +1,36 @@
+import { useState } from 'react';
 import { BookOpen, Clock, CheckCircle, AlertCircle, Calendar, TrendingUp, FileText, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { JoinClassModal } from '@/components/modals/JoinClassModal';
+import { QuickActionsModal } from '@/components/modals/QuickActionsModal';
+import { useNavigate } from 'react-router-dom';
 
 export default function StudentDashboard() {
+  const navigate = useNavigate();
+  const [joinClassModal, setJoinClassModal] = useState<{ isOpen: boolean; classDetails: any }>({
+    isOpen: false,
+    classDetails: null,
+  });
+  const [quickActionsModal, setQuickActionsModal] = useState(false);
+  
+  const handleJoinClass = (classItem: any) => {
+    setJoinClassModal({
+      isOpen: true,
+      classDetails: {
+        id: classItem.id,
+        name: classItem.name,
+        tutor: classItem.tutor,
+        time: classItem.time,
+        room: classItem.room,
+        meetingLink: 'https://meet.google.com/abc-def-123',
+        status: classItem.status,
+      },
+    });
+  };
   const stats = [
     {
       title: 'Enrolled Classes',
@@ -130,11 +155,11 @@ export default function StudentDashboard() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => navigate('/student/classes')}>
             <Calendar className="mr-2 h-4 w-4" />
             View Schedule
           </Button>
-          <Button size="sm">
+          <Button size="sm" onClick={() => navigate('/student/assignments')}>
             <FileText className="mr-2 h-4 w-4" />
             My Assignments
           </Button>
@@ -196,7 +221,7 @@ export default function StudentDashboard() {
                       with {classItem.tutor}
                     </p>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleJoinClass(classItem)}>
                     Join Class
                   </Button>
                 </div>
@@ -239,21 +264,23 @@ export default function StudentDashboard() {
               </div>
             </div>
 
-            {/* Quick Actions */}
             <div className="space-y-3">
               <h4 className="text-sm font-medium">Quick Actions</h4>
               <div className="grid grid-cols-1 gap-2">
-                <Button variant="outline" size="sm" className="justify-start">
+                <Button variant="outline" size="sm" className="justify-start" onClick={() => navigate('/student/assignments')}>
                   Submit Assignment
                 </Button>
-                <Button variant="outline" size="sm" className="justify-start">
+                <Button variant="outline" size="sm" className="justify-start" onClick={() => navigate('/student/grades')}>
                   View Grades
                 </Button>
-                <Button variant="outline" size="sm" className="justify-start">
+                <Button variant="outline" size="sm" className="justify-start" onClick={() => navigate('/student/resources')}>
                   Access Resources
                 </Button>
-                <Button variant="outline" size="sm" className="justify-start">
+                <Button variant="outline" size="sm" className="justify-start" onClick={() => navigate('/student/messaging')}>
                   Message Tutor
+                </Button>
+                <Button variant="outline" size="sm" className="justify-start" onClick={() => setQuickActionsModal(true)}>
+                  More Actions
                 </Button>
               </div>
             </div>
@@ -332,6 +359,18 @@ export default function StudentDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modals */}
+      <JoinClassModal
+        isOpen={joinClassModal.isOpen}
+        onClose={() => setJoinClassModal({ isOpen: false, classDetails: null })}
+        classDetails={joinClassModal.classDetails}
+      />
+      
+      <QuickActionsModal
+        isOpen={quickActionsModal}
+        onClose={() => setQuickActionsModal(false)}
+      />
     </div>
   );
 }
