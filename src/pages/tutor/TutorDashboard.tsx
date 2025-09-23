@@ -1,9 +1,111 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, FileText, Clock, BookOpen, MessageSquare } from "lucide-react";
+import { Calendar, Users, FileText, Clock, BookOpen, MessageSquare, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import classesData from '@/data/classes.json';
 
 const TutorDashboard = () => {
+  const { toast } = useToast();
+  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
+  const [isCreateAssignmentOpen, setIsCreateAssignmentOpen] = useState(false);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  
+  const [newSession, setNewSession] = useState({
+    title: '',
+    date: '',
+    time: '',
+    class: '',
+  });
+
+  const [newAssignment, setNewAssignment] = useState({
+    title: '',
+    class: '',
+    dueDate: '',
+    description: '',
+  });
+
+  const [newMessage, setNewMessage] = useState({
+    recipient: '',
+    subject: '',
+    message: '',
+  });
+
+  const myClasses = classesData.filter(cls => cls.tutorId === 'tutor-1');
+
+  const handleScheduleClass = () => {
+    if (!newSession.title || !newSession.date || !newSession.time || !newSession.class) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Class Scheduled",
+      description: `${newSession.title} has been scheduled successfully.`,
+    });
+    setNewSession({ title: '', date: '', time: '', class: '' });
+    setIsScheduleOpen(false);
+  };
+
+  const handleCreateAssignment = () => {
+    if (!newAssignment.title || !newAssignment.class || !newAssignment.dueDate) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Assignment Created",
+      description: `${newAssignment.title} has been created successfully.`,
+    });
+    setNewAssignment({ title: '', class: '', dueDate: '', description: '' });
+    setIsCreateAssignmentOpen(false);
+  };
+
+  const handleSendMessage = () => {
+    if (!newMessage.recipient || !newMessage.subject || !newMessage.message) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Message Sent",
+      description: `Message sent to ${newMessage.recipient} successfully.`,
+    });
+    setNewMessage({ recipient: '', subject: '', message: '' });
+    setIsMessageOpen(false);
+  };
+
+  const handleViewStudents = () => {
+    toast({
+      title: "Redirecting",
+      description: "Opening student management page.",
+    });
+  };
+
+  const handleScheduleMeeting = () => {
+    toast({
+      title: "Meeting Scheduler",
+      description: "Opening meeting scheduler.",
+    });
+  };
   const stats = {
     totalStudents: 28,
     activeClasses: 4,
@@ -55,10 +157,69 @@ const TutorDashboard = () => {
     <div className="flex-1 space-y-6 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Tutor Dashboard</h1>
-        <Button>
-          <Calendar className="mr-2 h-4 w-4" />
-          Schedule Class
-        </Button>
+        <Dialog open={isScheduleOpen} onOpenChange={setIsScheduleOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Calendar className="mr-2 h-4 w-4" />
+              Schedule Class
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Schedule New Class</DialogTitle>
+              <DialogDescription>
+                Schedule a new class session for your students
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Session Title</Label>
+                <Input
+                  id="title"
+                  value={newSession.title}
+                  onChange={(e) => setNewSession(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="e.g., Advanced React Patterns"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="class">Class</Label>
+                <Select value={newSession.class} onValueChange={(value) => setNewSession(prev => ({ ...prev, class: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {myClasses.map(cls => (
+                      <SelectItem key={cls.id} value={cls.id}>{cls.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="date">Date</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={newSession.date}
+                    onChange={(e) => setNewSession(prev => ({ ...prev, date: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="time">Time</Label>
+                  <Input
+                    id="time"
+                    type="time"
+                    value={newSession.time}
+                    onChange={(e) => setNewSession(prev => ({ ...prev, time: e.target.value }))}
+                  />
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button onClick={handleScheduleClass}>Schedule Class</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Stats Cards */}
@@ -177,19 +338,127 @@ const TutorDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="flex gap-2 flex-wrap">
-            <Button variant="outline">
-              <FileText className="mr-2 h-4 w-4" />
-              Create Assignment
-            </Button>
-            <Button variant="outline">
+            <Dialog open={isCreateAssignmentOpen} onOpenChange={setIsCreateAssignmentOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Create Assignment
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[525px]">
+                <DialogHeader>
+                  <DialogTitle>Create New Assignment</DialogTitle>
+                  <DialogDescription>
+                    Create a new assignment for your students
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="assignment-title">Assignment Title</Label>
+                    <Input
+                      id="assignment-title"
+                      value={newAssignment.title}
+                      onChange={(e) => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
+                      placeholder="e.g., React Component Architecture"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="assignment-class">Class</Label>
+                    <Select value={newAssignment.class} onValueChange={(value) => setNewAssignment(prev => ({ ...prev, class: value }))}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a class" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {myClasses.map(cls => (
+                          <SelectItem key={cls.id} value={cls.id}>{cls.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="due-date">Due Date</Label>
+                    <Input
+                      id="due-date"
+                      type="date"
+                      value={newAssignment.dueDate}
+                      onChange={(e) => setNewAssignment(prev => ({ ...prev, dueDate: e.target.value }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="assignment-description">Description</Label>
+                    <Textarea
+                      id="assignment-description"
+                      value={newAssignment.description}
+                      onChange={(e) => setNewAssignment(prev => ({ ...prev, description: e.target.value }))}
+                      placeholder="Assignment instructions and requirements..."
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button onClick={handleCreateAssignment}>Create Assignment</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Button variant="outline" onClick={handleViewStudents}>
               <Users className="mr-2 h-4 w-4" />
               View All Students
             </Button>
-            <Button variant="outline">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Send Message
-            </Button>
-            <Button variant="outline">
+
+            <Dialog open={isMessageOpen} onOpenChange={setIsMessageOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Send Message
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Send Message</DialogTitle>
+                  <DialogDescription>
+                    Send a message to students or parents
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="recipient">Recipient</Label>
+                    <Select value={newMessage.recipient} onValueChange={(value) => setNewMessage(prev => ({ ...prev, recipient: value }))}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select recipient" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Emma Thompson">Emma Thompson (Student)</SelectItem>
+                        <SelectItem value="James Rodriguez">James Rodriguez (Student)</SelectItem>
+                        <SelectItem value="Robert Thompson">Robert Thompson (Parent)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message-subject">Subject</Label>
+                    <Input
+                      id="message-subject"
+                      value={newMessage.subject}
+                      onChange={(e) => setNewMessage(prev => ({ ...prev, subject: e.target.value }))}
+                      placeholder="Message subject"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message-body">Message</Label>
+                    <Textarea
+                      id="message-body"
+                      value={newMessage.message}
+                      onChange={(e) => setNewMessage(prev => ({ ...prev, message: e.target.value }))}
+                      placeholder="Type your message here..."
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button onClick={handleSendMessage}>Send Message</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Button variant="outline" onClick={handleScheduleMeeting}>
               <Calendar className="mr-2 h-4 w-4" />
               Schedule Meeting
             </Button>
