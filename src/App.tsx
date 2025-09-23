@@ -19,6 +19,12 @@ import StudentAssignments from "./pages/student/StudentAssignments";
 import StudentGrades from "./pages/student/StudentGrades";
 import StudentResources from "./pages/student/StudentResources";
 import StudentMessaging from "./pages/student/StudentMessaging";
+import TutorClasses from "./pages/tutor/TutorClasses";
+import TutorStudents from "./pages/tutor/TutorStudents";
+import TutorAssignments from "./pages/tutor/TutorAssignments";
+import TutorResources from "./pages/tutor/TutorResources";
+import TutorMessaging from "./pages/tutor/TutorMessaging";
+import ProfileSettings from "./pages/profile/ProfileSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -85,6 +91,40 @@ function AppRoutes() {
           <Route path="/student/messaging" element={
             <ProtectedRoute allowedRoles={['student']}>
               <StudentMessaging />
+            </ProtectedRoute>
+          } />
+          
+          {/* Tutor Sub-routes */}
+          <Route path="/tutor/classes" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorClasses />
+            </ProtectedRoute>
+          } />
+          <Route path="/tutor/students" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorStudents />
+            </ProtectedRoute>
+          } />
+          <Route path="/tutor/assignments" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorAssignments />
+            </ProtectedRoute>
+          } />
+          <Route path="/tutor/resources" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorResources />
+            </ProtectedRoute>
+          } />
+          <Route path="/tutor/messaging" element={
+            <ProtectedRoute allowedRoles={['tutor']}>
+              <TutorMessaging />
+            </ProtectedRoute>
+          } />
+          
+          {/* Profile Route - Available to all authenticated users */}
+          <Route path="/profile" element={
+            <ProtectedRoute allowedRoles={['student', 'tutor', 'parent', 'admin']}>
+              <ProfileSettings />
             </ProtectedRoute>
           } />
           
