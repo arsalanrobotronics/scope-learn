@@ -107,7 +107,7 @@ export function ViewMaterialsModal({ isOpen, onClose, className }: ViewMaterials
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[80vh]">
+      <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Folder className="h-5 w-5" />
@@ -126,7 +126,7 @@ export function ViewMaterialsModal({ isOpen, onClose, className }: ViewMaterials
             <TabsTrigger value="link">Links</TabsTrigger>
           </TabsList>
 
-          <div className="max-h-[400px] overflow-y-auto">
+          <div className="max-h-[400px]">
             <TabsContent value="all" className="space-y-3">
               {mockMaterials.map((material) => (
                 <Card key={material.id} className="transition-shadow hover:shadow-sm">
