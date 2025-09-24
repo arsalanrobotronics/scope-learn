@@ -10,13 +10,13 @@ import { MainLayout } from "@/components/common/MainLayout";
 import { useSession } from "@/lib/store/authStore";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
-// import AdminDashboard from "./pages/admin/AdminDashboard";
-// import AdminClasses from "./pages/admin/AdminClasses";
-// import AdminResources from "./pages/admin/AdminResources";
-// import AdminBilling from "./pages/admin/AdminBilling";
-// import AdminMessaging from "./pages/admin/AdminMessaging";
-// import AdminNotifications from "./pages/admin/AdminNotifications";
-// import AdminUsers from "./pages/admin/AdminUsers";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminClasses from "./pages/admin/AdminClasses";
+import AdminResources from "./pages/admin/AdminResources";
+import AdminBilling from "./pages/admin/AdminBilling";
+import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminUsers from "./pages/admin/AdminUsers";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import TutorDashboard from "./pages/tutor/TutorDashboard";
 import ParentDashboard from "./pages/parent/ParentDashboard";
@@ -46,41 +46,41 @@ function AppRoutes() {
           <Route path="/" element={<Navigate to={`/${session.role}`} replace />} />
           
           {/* Admin Routes */}
-              {/* <Route path="/admin" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/classes" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminClasses />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/resources" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminResources />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/billing" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminBilling />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/messaging" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminMessaging />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/notifications" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminNotifications />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/users" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminUsers />
-                </ProtectedRoute>
-              } /> */}
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/analytics" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/classes" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminClasses />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/resources" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminResources />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/billing" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminBilling />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/notifications" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminNotifications />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUsers />
+            </ProtectedRoute>
+          } />
           
           {/* Student Routes */}
           <Route path="/student" element={
