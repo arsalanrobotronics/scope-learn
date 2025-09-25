@@ -20,6 +20,14 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import TutorDashboard from "./pages/tutor/TutorDashboard";
 import ParentDashboard from "./pages/parent/ParentDashboard";
+import ParentClasses from "./pages/parent/ParentClasses";
+import ParentAssignments from "./pages/parent/ParentAssignments";
+import ParentGrades from "./pages/parent/ParentGrades";
+import ParentResources from "./pages/parent/ParentResources";
+import ParentBilling from "./pages/parent/ParentBilling";
+import ParentMessages from "./pages/parent/ParentMessages";
+import ParentNotifications from "./pages/parent/ParentNotifications";
+import ParentSettings from "./pages/parent/ParentSettings";
 import StudentClasses from "./pages/student/StudentClasses";
 import StudentAssignments from "./pages/student/StudentAssignments";
 import StudentGrades from "./pages/student/StudentGrades";
@@ -32,6 +40,7 @@ import TutorResources from "./pages/tutor/TutorResources";
 import TutorMessaging from "./pages/tutor/TutorMessaging";
 import ProfileSettings from "./pages/profile/ProfileSettings";
 import NotFound from "./pages/NotFound";
+import { ParentProvider } from "./components/parent/ParentProvider";
 
 const queryClient = new QueryClient();
 
@@ -99,7 +108,65 @@ function AppRoutes() {
           {/* Parent Routes */}
           <Route path="/parent" element={
             <ProtectedRoute allowedRoles={['parent']}>
-              <ParentDashboard />
+              <ParentProvider>
+                <ParentDashboard />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/classes" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentClasses />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/assignments" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentAssignments />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/grades" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentGrades />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/resources" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentResources />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/billing" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentBilling />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/messages" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentMessages />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/notifications" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentNotifications />
+              </ParentProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/parent/settings" element={
+            <ProtectedRoute allowedRoles={['parent']}>
+              <ParentProvider>
+                <ParentSettings />
+              </ParentProvider>
             </ProtectedRoute>
           } />
           

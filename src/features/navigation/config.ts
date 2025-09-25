@@ -262,6 +262,17 @@ export const navByRole: Record<UserRole, NavSection[]> = {
       ]
     },
     {
+      title: 'Resources',
+      items: [
+        { 
+          href: '/parent/resources', 
+          icon: Library, 
+          label: 'Resources',
+          description: 'Course materials and library'
+        },
+      ]
+    },
+    {
       title: 'Financial',
       items: [
         { 
@@ -277,10 +288,28 @@ export const navByRole: Record<UserRole, NavSection[]> = {
       title: 'Communication',
       items: [
         { 
-          href: '/parent/messaging', 
+          href: '/parent/messages', 
           icon: MessageSquare, 
           label: 'Messages',
-          description: 'Communication with tutors'
+          description: 'Communication with tutors',
+          badge: 2
+        },
+        { 
+          href: '/parent/notifications', 
+          icon: Bell, 
+          label: 'Notifications',
+          description: 'Important updates'
+        },
+      ]
+    },
+    {
+      title: 'Settings',
+      items: [
+        { 
+          href: '/parent/settings', 
+          icon: Settings, 
+          label: 'Settings',
+          description: 'Profile and preferences'
         },
       ]
     }
