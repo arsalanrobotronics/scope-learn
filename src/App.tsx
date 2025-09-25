@@ -11,6 +11,11 @@ import { ParentProvider } from "./components/parent/ParentProvider";
 
 // Public pages
 import PublicHome from "./pages/public/PublicHome";
+import About from "./pages/public/About";
+import Services from "./pages/public/Services";
+import Appointments from "./pages/public/Appointments";
+import Resources from "./pages/public/Resources";
+import Contact from "./pages/public/Contact";
 import Index from "./pages/Index";
 
 // Auth pages
@@ -69,6 +74,11 @@ const App = () => (
           <Routes>
             {/* Public Website */}
             <Route path="/" element={<PublicHome />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/contact" element={<Contact />} />
             
             {/* Portal Access */}
             <Route path="/portal" element={<Index />} />

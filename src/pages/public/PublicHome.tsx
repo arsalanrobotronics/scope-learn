@@ -17,6 +17,7 @@ import {
   MapPin
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import ChatWidget from "@/components/common/ChatWidget";
 
 export default function PublicHome() {
   const services = [
@@ -81,11 +82,12 @@ export default function PublicHome() {
               </div>
             </div>
             <nav className="hidden md:flex items-center gap-6">
-              <a href="#about" className="text-foreground hover:text-primary transition-colors">About</a>
-              <a href="#services" className="text-foreground hover:text-primary transition-colors">Services</a>
-              <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">Reviews</a>
-              <a href="#contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
-              <Link to="/auth/signin">
+              <Link to="/about" className="text-foreground hover:text-primary transition-colors">About</Link>
+              <Link to="/services" className="text-foreground hover:text-primary transition-colors">Services</Link>
+              <Link to="/appointments" className="text-foreground hover:text-primary transition-colors">Booking</Link>
+              <Link to="/resources" className="text-foreground hover:text-primary transition-colors">Resources</Link>
+              <Link to="/contact" className="text-foreground hover:text-primary transition-colors">Contact</Link>
+              <Link to="/portal">
                 <Button variant="outline" size="sm">
                   Portal Login
                 </Button>
@@ -113,13 +115,17 @@ export default function PublicHome() {
             that transforms confusion into confidence and challenges into achievements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-gradient-primary text-white">
-              Book Free Consultation
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button variant="outline" size="lg">
-              View Programs
-            </Button>
+            <Link to="/appointments">
+              <Button size="lg" className="bg-gradient-primary text-white">
+                Book Free Consultation
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/services">
+              <Button variant="outline" size="lg">
+                View Programs
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -282,10 +288,12 @@ export default function PublicHome() {
             <div>
               <h5 className="font-semibold text-foreground mb-4">Quick Links</h5>
               <div className="space-y-2 text-muted-foreground">
-                <div><a href="#about" className="hover:text-primary transition-colors">About Us</a></div>
-                <div><a href="#services" className="hover:text-primary transition-colors">Services</a></div>
-                <div><a href="#testimonials" className="hover:text-primary transition-colors">Reviews</a></div>
-                <div><Link to="/auth/signin" className="hover:text-primary transition-colors">Portal Login</Link></div>
+                <div><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></div>
+                <div><Link to="/services" className="hover:text-primary transition-colors">Services</Link></div>
+                <div><Link to="/appointments" className="hover:text-primary transition-colors">Booking</Link></div>
+                <div><Link to="/resources" className="hover:text-primary transition-colors">Resources</Link></div>
+                <div><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></div>
+                <div><Link to="/portal" className="hover:text-primary transition-colors">Portal Login</Link></div>
               </div>
             </div>
             <div>
@@ -311,6 +319,9 @@ export default function PublicHome() {
           </div>
         </div>
       </footer>
+      
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }
