@@ -2,14 +2,22 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MainLayout } from "@/components/common/MainLayout";
-import { useSession } from "@/lib/store/authStore";
+import { ParentProvider } from "./components/parent/ParentProvider";
+
+// Public pages
+import PublicHome from "./pages/public/PublicHome";
+import Index from "./pages/Index";
+
+// Auth pages
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
+
+// Admin pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminClasses from "./pages/admin/AdminClasses";
@@ -17,8 +25,24 @@ import AdminResources from "./pages/admin/AdminResources";
 import AdminBilling from "./pages/admin/AdminBilling";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminUsers from "./pages/admin/AdminUsers";
+
+// Student pages
 import StudentDashboard from "./pages/student/StudentDashboard";
+import StudentClasses from "./pages/student/StudentClasses";
+import StudentAssignments from "./pages/student/StudentAssignments";
+import StudentGrades from "./pages/student/StudentGrades";
+import StudentResources from "./pages/student/StudentResources";
+import StudentMessaging from "./pages/student/StudentMessaging";
+
+// Tutor pages
 import TutorDashboard from "./pages/tutor/TutorDashboard";
+import TutorClasses from "./pages/tutor/TutorClasses";
+import TutorStudents from "./pages/tutor/TutorStudents";
+import TutorAssignments from "./pages/tutor/TutorAssignments";
+import TutorResources from "./pages/tutor/TutorResources";
+import TutorMessaging from "./pages/tutor/TutorMessaging";
+
+// Parent pages
 import ParentDashboard from "./pages/parent/ParentDashboard";
 import ParentClasses from "./pages/parent/ParentClasses";
 import ParentAssignments from "./pages/parent/ParentAssignments";
@@ -28,225 +52,12 @@ import ParentBilling from "./pages/parent/ParentBilling";
 import ParentMessages from "./pages/parent/ParentMessages";
 import ParentNotifications from "./pages/parent/ParentNotifications";
 import ParentSettings from "./pages/parent/ParentSettings";
-import StudentClasses from "./pages/student/StudentClasses";
-import StudentAssignments from "./pages/student/StudentAssignments";
-import StudentGrades from "./pages/student/StudentGrades";
-import StudentResources from "./pages/student/StudentResources";
-import StudentMessaging from "./pages/student/StudentMessaging";
-import TutorClasses from "./pages/tutor/TutorClasses";
-import TutorStudents from "./pages/tutor/TutorStudents";
-import TutorAssignments from "./pages/tutor/TutorAssignments";
-import TutorResources from "./pages/tutor/TutorResources";
-import TutorMessaging from "./pages/tutor/TutorMessaging";
+
+// Profile pages
 import ProfileSettings from "./pages/profile/ProfileSettings";
 import NotFound from "./pages/NotFound";
-import { ParentProvider } from "./components/parent/ParentProvider";
 
 const queryClient = new QueryClient();
-
-function AppRoutes() {
-  const session = useSession();
-
-  // Redirect to appropriate portal if logged in
-  if (session) {
-    return (
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<Navigate to={`/${session.role}`} replace />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/analytics" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminAnalytics />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/classes" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminClasses />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/resources" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminResources />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/billing" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminBilling />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/notifications" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminNotifications />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/users" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminUsers />
-            </ProtectedRoute>
-          } />
-          
-          {/* Student Routes */}
-          <Route path="/student" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentDashboard />
-            </ProtectedRoute>
-          } />
-          
-          {/* Tutor Routes */}
-          <Route path="/tutor" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorDashboard />
-            </ProtectedRoute>
-          } />
-          
-          {/* Parent Routes */}
-          <Route path="/parent" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentDashboard />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/classes" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentClasses />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/assignments" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentAssignments />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/grades" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentGrades />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/resources" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentResources />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/billing" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentBilling />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/messages" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentMessages />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/notifications" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentNotifications />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          <Route path="/parent/settings" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentProvider>
-                <ParentSettings />
-              </ParentProvider>
-            </ProtectedRoute>
-          } />
-          
-          {/* Student Sub-routes */}
-          <Route path="/student/classes" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentClasses />
-            </ProtectedRoute>
-          } />
-          <Route path="/student/assignments" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentAssignments />
-            </ProtectedRoute>
-          } />
-          <Route path="/student/grades" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentGrades />
-            </ProtectedRoute>
-          } />
-          <Route path="/student/resources" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentResources />
-            </ProtectedRoute>
-          } />
-          <Route path="/student/messaging" element={
-            <ProtectedRoute allowedRoles={['student']}>
-              <StudentMessaging />
-            </ProtectedRoute>
-          } />
-          
-          {/* Tutor Sub-routes */}
-          <Route path="/tutor/classes" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorClasses />
-            </ProtectedRoute>
-          } />
-          <Route path="/tutor/students" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorStudents />
-            </ProtectedRoute>
-          } />
-          <Route path="/tutor/assignments" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorAssignments />
-            </ProtectedRoute>
-          } />
-          <Route path="/tutor/resources" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorResources />
-            </ProtectedRoute>
-          } />
-          <Route path="/tutor/messaging" element={
-            <ProtectedRoute allowedRoles={['tutor']}>
-              <TutorMessaging />
-            </ProtectedRoute>
-          } />
-          
-          {/* Profile Route - Available to all authenticated users */}
-          <Route path="/profile" element={
-            <ProtectedRoute allowedRoles={['student', 'tutor', 'parent', 'admin']}>
-              <ProfileSettings />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </MainLayout>
-    );
-  }
-
-  // Auth routes for non-authenticated users
-  return (
-    <Routes>
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/" element={<Navigate to="/sign-in" replace />} />
-      <Route path="*" element={<Navigate to="/sign-in" replace />} />
-    </Routes>
-  );
-}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -255,9 +66,212 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthGuard>
-            <AppRoutes />
-          </AuthGuard>
+          <Routes>
+            {/* Public Website */}
+            <Route path="/" element={<PublicHome />} />
+            
+            {/* Portal Access */}
+            <Route path="/portal" element={<Index />} />
+            
+            {/* Auth Routes */}
+            <Route path="/auth/signin" element={<SignIn />} />
+            <Route path="/auth/signup" element={<SignUp />} />
+            
+            {/* Protected Routes with MainLayout */}
+            <Route path="/admin/*" element={
+              <AuthGuard>
+                <MainLayout>
+                  <Routes>
+                    <Route index element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="analytics" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminAnalytics />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="classes" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminClasses />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="resources" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminResources />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="billing" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminBilling />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="notifications" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminNotifications />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="users" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminUsers />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </MainLayout>
+              </AuthGuard>
+            } />
+            
+            <Route path="/student/*" element={
+              <AuthGuard>
+                <MainLayout>
+                  <Routes>
+                    <Route index element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentDashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="classes" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentClasses />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="assignments" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentAssignments />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="grades" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentGrades />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="resources" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentResources />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="messaging" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentMessaging />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </MainLayout>
+              </AuthGuard>
+            } />
+            
+            <Route path="/tutor/*" element={
+              <AuthGuard>
+                <MainLayout>
+                  <Routes>
+                    <Route index element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorDashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="classes" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorClasses />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="students" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorStudents />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="assignments" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorAssignments />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="resources" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorResources />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="messaging" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorMessaging />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </MainLayout>
+              </AuthGuard>
+            } />
+            
+            <Route path="/parent/*" element={
+              <AuthGuard>
+                <MainLayout>
+                  <ParentProvider>
+                    <Routes>
+                      <Route index element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentDashboard />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="classes" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentClasses />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="assignments" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentAssignments />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="grades" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentGrades />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="resources" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentResources />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="billing" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentBilling />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="messages" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentMessages />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="notifications" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentNotifications />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="settings" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentSettings />
+                        </ProtectedRoute>
+                      } />
+                    </Routes>
+                  </ParentProvider>
+                </MainLayout>
+              </AuthGuard>
+            } />
+            
+            <Route path="/profile/*" element={
+              <AuthGuard>
+                <MainLayout>
+                  <Routes>
+                    <Route path="settings" element={
+                      <ProtectedRoute allowedRoles={['student', 'tutor', 'parent', 'admin']}>
+                        <ProfileSettings />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </MainLayout>
+              </AuthGuard>
+            } />
+            
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
