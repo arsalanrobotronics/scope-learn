@@ -1,4 +1,4 @@
-# EduPortal - Learning Management System
+# MBEST - Learning Management System
 
 A comprehensive, frontend-only LMS application built with React, TypeScript, and modern web technologies. Features role-based authentication and personalized portals for different user types.
 

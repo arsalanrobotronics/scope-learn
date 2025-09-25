@@ -10,7 +10,7 @@ export default function SignIn() {
             <h1 className="text-5xl font-bold leading-tight">
               Welcome back to{' '}
               <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                EduPortal
+                MBEST
               </span>
             </h1>
             <p className="text-xl text-white/80">

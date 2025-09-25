@@ -85,7 +85,7 @@ export default function AdminDashboard() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
           <p className="text-muted-foreground">
-            Welcome back! Here's what's happening at EduPortal today.
+            Welcome back! Here's what's happening at MBEST today.
           </p>
         </div>
         <div className="flex gap-2">

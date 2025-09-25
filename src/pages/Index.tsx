@@ -6,7 +6,7 @@ const Index = () => {
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
             <span className="text-2xl font-bold text-white">EP</span>
           </div>
-          <h1 className="mb-4 text-5xl font-bold">EduPortal</h1>
+          <h1 className="mb-4 text-5xl font-bold">MBEST</h1>
           <p className="text-xl text-white/80">Learning Management System</p>
         </div>
         <p className="text-lg text-white/70">

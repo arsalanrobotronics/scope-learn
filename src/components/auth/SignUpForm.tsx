@@ -45,7 +45,7 @@ export function SignUpForm() {
         navigate(portalRoot, { replace: true });
         
         toast({
-          title: 'Welcome to EduPortal!',
+          title: 'Welcome to MBEST!',
           description: `Account created successfully. Welcome, ${session.name}!`,
         });
       }
@@ -64,7 +64,7 @@ export function SignUpForm() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
         <CardDescription>
-          Choose your role and create your EduPortal account
+          Choose your role and create your MBEST account
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

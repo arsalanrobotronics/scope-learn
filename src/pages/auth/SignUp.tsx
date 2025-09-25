@@ -10,13 +10,13 @@ export default function SignUp() {
             <h1 className="text-5xl font-bold leading-tight">
               Join{' '}
               <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                EduPortal
+                MBEST
               </span>{' '}
               Today
             </h1>
             <p className="text-xl text-white/80">
               Create your account and start your educational journey. Whether you're a student, 
-              tutor, parent, or administrator, EduPortal has the tools you need.
+              tutor, parent, or administrator, MBEST has the tools you need.
             </p>
             <div className="grid grid-cols-1 gap-4 pt-8">
               <div className="flex items-center gap-4 rounded-lg bg-white/10 p-4">

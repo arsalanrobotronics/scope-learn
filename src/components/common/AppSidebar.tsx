@@ -59,7 +59,7 @@ export function AppSidebar() {
           {!isCollapsed && (
             <div className="flex flex-col">
               <h2 className="text-lg font-bold text-sidebar-foreground">
-                EduPortal
+                MBEST
               </h2>
               <p className="text-xs text-sidebar-foreground/70">
                 Learning Management System
