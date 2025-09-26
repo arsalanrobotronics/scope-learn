@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ModernNavbar } from "@/components/common/ModernNavbar";
 import { ModernFooter } from "@/components/common/ModernFooter";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ChatWidget } from "@/components/common/ChatWidget";
+import ChatWidget from "@/components/common/ChatWidget";
 
 const faqs = [
   {
