@@ -47,6 +47,7 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     logout();
+    navigate('/auth/signin');
   };
 
   return (

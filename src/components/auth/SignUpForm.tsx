@@ -199,7 +199,7 @@ export function SignUpForm() {
 
         <div className="text-center text-sm">
           <span className="text-muted-foreground">Already have an account? </span>
-          <Link to="/sign-in" className="text-primary hover:underline">
+          <Link to="/auth/signin" className="text-primary hover:underline">
             Sign in
           </Link>
         </div>

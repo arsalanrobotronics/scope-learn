@@ -22,7 +22,7 @@ export function ProtectedRoute({
   useEffect(() => {
     // If no session, redirect to sign in
     if (!session) {
-      navigate('/sign-in', { 
+      navigate('/auth/signin', { 
         state: { from: location.pathname },
         replace: true 
       });
