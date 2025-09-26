@@ -78,6 +78,10 @@ export default {
         "gradient-hero": "var(--gradient-hero)",
         "gradient-card": "var(--gradient-card)",
       },
+      backgroundSize: {
+        '200': '200% 200%',
+        '400': '400% 400%',
+      },
       boxShadow: {
         sm: "var(--shadow-sm)",
         md: "var(--shadow-md)",
@@ -184,6 +188,22 @@ export default {
           "50%": {
             boxShadow: "0 0 30px rgba(59, 130, 246, 0.6)"
           }
+        },
+        "gradient": {
+          "0%, 100%": {
+            backgroundPosition: "0% 50%"
+          },
+          "50%": {
+            backgroundPosition: "100% 50%"
+          }
+        },
+        "shimmer": {
+          "0%": {
+            backgroundPosition: "-200% 0"
+          },
+          "100%": {
+            backgroundPosition: "200% 0"
+          }
         }
       },
       animation: {
@@ -197,6 +217,8 @@ export default {
         "bounce-gentle": "bounce-gentle 2s infinite",
         "float": "float 3s ease-in-out infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "gradient": "gradient 3s ease infinite",
+        "shimmer": "shimmer 1.5s infinite",
       },
     },
   },

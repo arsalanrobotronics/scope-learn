@@ -5,6 +5,9 @@
 /* Parent Portal Animations */
 @import './styles/parent-portal.css';
 
+/* Modern Animation System */
+@import './styles/animations.css';
+
 /* LMS Design System - Modern Educational Platform Theme */
 
 @layer base {

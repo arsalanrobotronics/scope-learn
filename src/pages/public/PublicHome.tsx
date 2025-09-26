@@ -14,10 +14,26 @@ import {
   MessageCircle,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  Sparkles,
+  Zap,
+  Target,
+  TrendingUp,
+  CheckCircle,
+  Play
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ChatWidget from "@/components/common/ChatWidget";
+import { 
+  AnimatedContainer, 
+  AnimatedCard, 
+  AnimatedButton, 
+  FloatingElement, 
+  GradientText, 
+  StaggeredContainer,
+  MorphingBackground
+} from "@/components/ui/animated-elements";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export default function PublicHome() {
   const services = [
@@ -67,7 +83,8 @@ export default function PublicHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50">
+    <div className="min-h-screen relative overflow-hidden">
+      <MorphingBackground />
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-border/50 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">

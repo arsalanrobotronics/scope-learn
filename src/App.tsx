@@ -11,7 +11,7 @@ import { ScrollManager } from "@/components/common/ScrollManager";
 import { ParentProvider } from "./components/parent/ParentProvider";
 
 // Public pages
-import PublicHome from "./pages/public/PublicHome";
+import PublicHome from "./pages/public/EnhancedPublicHome";
 import About from "./pages/public/About";
 import Services from "./pages/public/Services";
 import Appointments from "./pages/public/Appointments";
