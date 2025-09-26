@@ -160,7 +160,7 @@ const StudentResources = () => {
             Access course materials, textbooks, and learning resources
           </p>
         </div>
-        <Button>
+        <Button onClick={() => toast({ title: "Resource Request", description: "Resource request form opened. Submit your request and we'll review it." })}>
           <BookOpen className="mr-2 h-4 w-4" />
           Request Resource
         </Button>
@@ -254,7 +254,7 @@ const StudentResources = () => {
                       <Star className={`mr-2 h-4 w-4 ${isFavorite(resource.id) ? 'fill-yellow-400 text-yellow-400' : ''}`} />
                       {isFavorite(resource.id) ? 'Remove Favorite' : 'Save to Favorites'}
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Preview", description: `Opening preview for ${resource.title}...` })}>
                       Preview
                     </Button>
                   </div>
@@ -293,7 +293,7 @@ const StudentResources = () => {
                       <Download className="mr-2 h-4 w-4" />
                       Download PDF
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Preview", description: `Opening PDF preview for ${resource.title}...` })}>
                       Preview
                     </Button>
                   </div>

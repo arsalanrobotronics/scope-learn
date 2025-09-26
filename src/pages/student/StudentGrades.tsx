@@ -1,10 +1,17 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Award, Calendar } from "lucide-react";
+import { GradeDetailsModal } from '@/components/modals/GradeDetailsModal';
+import { useState } from 'react';
 
 const StudentGrades = () => {
+  const [detailsModal, setDetailsModal] = useState<{ isOpen: boolean; subject: any }>({
+    isOpen: false,
+    subject: null,
+  });
   const overallStats = {
     gpa: 3.4,
     overallGrade: 87,
@@ -226,6 +233,15 @@ const StudentGrades = () => {
                         ))}
                       </div>
                     </div>
+
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setDetailsModal({ isOpen: true, subject })}
+                      className="mt-4"
+                    >
+                      View Details
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -274,6 +290,13 @@ const StudentGrades = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Grade Details Modal */}
+      <GradeDetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() => setDetailsModal({ isOpen: false, subject: null })}
+        subject={detailsModal.subject}
+      />
     </div>
   );
 };

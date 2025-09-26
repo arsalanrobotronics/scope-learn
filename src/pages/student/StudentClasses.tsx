@@ -4,11 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Calendar, Clock, Users, ExternalLink } from "lucide-react";
 import { ViewMaterialsModal } from '@/components/modals/ViewMaterialsModal';
+import { ClassScheduleModal } from '@/components/modals/ClassScheduleModal';
 import { useToast } from '@/hooks/use-toast';
 
 const StudentClasses = () => {
   const { toast } = useToast();
   const [materialsModal, setMaterialsModal] = useState<{ isOpen: boolean; className: string }>({
+    isOpen: false,
+    className: '',
+  });
+  const [scheduleModal, setScheduleModal] = useState<{ isOpen: boolean; className: string }>({
     isOpen: false,
     className: '',
   });
@@ -18,10 +23,7 @@ const StudentClasses = () => {
   };
   
   const handleClassSchedule = (className: string) => {
-    toast({
-      title: "Class Schedule",
-      description: `Opening detailed schedule for ${className}...`,
-    });
+    setScheduleModal({ isOpen: true, className });
   };
   const enrolledClasses = [
     {
@@ -242,6 +244,12 @@ const StudentClasses = () => {
         isOpen={materialsModal.isOpen}
         onClose={() => setMaterialsModal({ isOpen: false, className: '' })}
         className={materialsModal.className}
+      />
+      
+      <ClassScheduleModal
+        isOpen={scheduleModal.isOpen}
+        onClose={() => setScheduleModal({ isOpen: false, className: '' })}
+        className={scheduleModal.className}
       />
     </div>
   );

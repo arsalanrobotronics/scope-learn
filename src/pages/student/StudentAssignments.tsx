@@ -5,11 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Clock, Calendar, CheckCircle, AlertCircle } from "lucide-react";
 import { AskQuestionModal } from '@/components/modals/AskQuestionModal';
+import { AssignmentDetailsModal } from '@/components/modals/AssignmentDetailsModal';
+import { SubmitAssignmentModal } from '@/components/modals/SubmitAssignmentModal';
 import { useToast } from '@/hooks/use-toast';
 
 const StudentAssignments = () => {
   const { toast } = useToast();
   const [questionModal, setQuestionModal] = useState<{ isOpen: boolean; assignment: any }>({
+    isOpen: false,
+    assignment: null,
+  });
+  const [detailsModal, setDetailsModal] = useState<{ isOpen: boolean; assignment: any }>({
+    isOpen: false,
+    assignment: null,
+  });
+  const [submitModal, setSubmitModal] = useState<{ isOpen: boolean; assignment: any }>({
     isOpen: false,
     assignment: null,
   });
@@ -207,10 +217,10 @@ const StudentAssignments = () => {
                     </div>
 
                     <div className="flex gap-2">
-                      <Button size="sm" onClick={() => toast({ title: "Assignment Submitted", description: "Your assignment has been submitted successfully." })}>
+                      <Button size="sm" onClick={() => setSubmitModal({ isOpen: true, assignment })}>
                         Submit Assignment
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => toast({ title: "Assignment Details", description: `Opening details for ${assignment.title}...` })}>
+                      <Button variant="outline" size="sm" onClick={() => setDetailsModal({ isOpen: true, assignment })}>
                         View Details
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => setQuestionModal({ isOpen: true, assignment })}>
@@ -272,9 +282,6 @@ const StudentAssignments = () => {
                     <Button variant="outline" size="sm" onClick={() => toast({ title: "Viewing Submission", description: `Opening submission for ${assignment.title}...` })}>
                       View Submission
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Downloading Feedback", description: `Downloading feedback for ${assignment.title}...` })}>
-                      Download Feedback
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -325,12 +332,24 @@ const StudentAssignments = () => {
         </Card>
       </div>
 
-      {/* Question Modal */}
+      {/* Modals */}
       <AskQuestionModal
         isOpen={questionModal.isOpen}
         onClose={() => setQuestionModal({ isOpen: false, assignment: null })}
         assignmentTitle={questionModal.assignment?.title}
         className={questionModal.assignment?.class}
+      />
+      
+      <AssignmentDetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() => setDetailsModal({ isOpen: false, assignment: null })}
+        assignment={detailsModal.assignment}
+      />
+      
+      <SubmitAssignmentModal
+        isOpen={submitModal.isOpen}
+        onClose={() => setSubmitModal({ isOpen: false, assignment: null })}
+        assignment={submitModal.assignment}
       />
     </div>
   );
