@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MainLayout } from "@/components/common/MainLayout";
+import { ScrollManager } from "@/components/common/ScrollManager";
 import { ParentProvider } from "./components/parent/ParentProvider";
 
 // Public pages
@@ -56,10 +57,13 @@ import ParentResources from "./pages/parent/ParentResources";
 import ParentBilling from "./pages/parent/ParentBilling";
 import ParentMessages from "./pages/parent/ParentMessages";
 import ParentNotifications from "./pages/parent/ParentNotifications";
-import ParentSettings from "./pages/parent/ParentSettings";
+import ParentProfile from "./pages/parent/ParentProfile";
 
 // Profile pages
 import ProfileSettings from "./pages/profile/ProfileSettings";
+import AdminProfile from "./pages/admin/AdminProfile";
+import StudentProfile from "./pages/student/StudentProfile";
+import TutorProfile from "./pages/tutor/TutorProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -71,6 +75,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollManager />
           <Routes>
             {/* Public Website */}
             <Route path="/" element={<PublicHome />} />
@@ -127,6 +132,11 @@ const App = () => (
                         <AdminUsers />
                       </ProtectedRoute>
                     } />
+                    <Route path="profile" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminProfile />
+                      </ProtectedRoute>
+                    } />
                   </Routes>
                 </MainLayout>
               </AuthGuard>
@@ -166,6 +176,11 @@ const App = () => (
                         <StudentMessaging />
                       </ProtectedRoute>
                     } />
+                    <Route path="profile" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentProfile />
+                      </ProtectedRoute>
+                    } />
                   </Routes>
                 </MainLayout>
               </AuthGuard>
@@ -203,6 +218,11 @@ const App = () => (
                     <Route path="messaging" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorMessaging />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="profile" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorProfile />
                       </ProtectedRoute>
                     } />
                   </Routes>
@@ -255,9 +275,9 @@ const App = () => (
                           <ParentNotifications />
                         </ProtectedRoute>
                       } />
-                      <Route path="settings" element={
+                      <Route path="profile" element={
                         <ProtectedRoute allowedRoles={['parent']}>
-                          <ParentSettings />
+                          <ParentProfile />
                         </ProtectedRoute>
                       } />
                     </Routes>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '@/styles/parent-portal.css';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -140,31 +141,6 @@ export default function ParentAssignments() {
         <ChildSwitcher />
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search assignments or subjects..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Assignments</SelectItem>
-            <SelectItem value="due">Due</SelectItem>
-            <SelectItem value="submitted">Submitted</SelectItem>
-            <SelectItem value="graded">Graded</SelectItem>
-            <SelectItem value="late">Late</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
       {/* Summary Stats */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
@@ -220,6 +196,31 @@ export default function ParentAssignments() {
         </Card>
       </div>
 
+      {/* Filters */}
+      <div className="flex gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search assignments or subjects..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Assignments</SelectItem>
+            <SelectItem value="due">Due</SelectItem>
+            <SelectItem value="submitted">Submitted</SelectItem>
+            <SelectItem value="graded">Graded</SelectItem>
+            <SelectItem value="late">Late</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Assignments List */}
       {isLoading ? (
         <div className="flex items-center justify-center h-64">
@@ -238,58 +239,78 @@ export default function ParentAssignments() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {filteredAssignments.map((assignment) => {
+              {filteredAssignments.map((assignment, index) => {
                 const StatusIcon = getStatusIcon(assignment.status);
                 const daysUntilDue = getDaysUntilDue(assignment.dueDate);
                 
                 return (
-                  <div key={assignment.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                        <StatusIcon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold">{assignment.title}</h4>
-                        <p className="text-sm text-muted-foreground">{assignment.subject}</p>
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            Due: {formatDate(assignment.dueDate)}
-                          </span>
-                          {assignment.status === 'due' && daysUntilDue >= 0 && (
-                            <span className={`flex items-center gap-1 ${daysUntilDue <= 1 ? 'text-destructive' : ''}`}>
-                              <Clock className="h-3 w-3" />
-                              {daysUntilDue === 0 ? 'Due today' : `${daysUntilDue} day${daysUntilDue !== 1 ? 's' : ''} left`}
-                            </span>
-                          )}
+                  <div 
+                    key={assignment.id} 
+                    className="group relative overflow-hidden"
+                    style={{ 
+                      animation: `slideInUp 0.6s ease-out ${index * 0.1}s both` 
+                    }}
+                  >
+                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer bg-gradient-to-r from-background to-muted/10 group-hover:from-primary/5 group-hover:to-secondary/5">
+                      {/* Background gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-secondary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                      
+                      <div className="flex items-center gap-4 relative z-10">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
+                          <StatusIcon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />
                         </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      {assignment.grade && (
-                        <div className="text-right">
-                          <div className="font-semibold">{assignment.grade}%</div>
-                          <div className="text-xs text-muted-foreground">
-                            {assignment.maxGrade ? `/ ${assignment.maxGrade}` : ''}
+                        <div className="space-y-1">
+                          <h4 className="font-semibold group-hover:text-primary transition-colors duration-300">{assignment.title}</h4>
+                          <p className="text-sm text-muted-foreground group-hover:text-foreground/70 transition-colors duration-300">{assignment.subject}</p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground group-hover:text-foreground/60 transition-colors duration-300">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3 group-hover:text-primary transition-colors duration-300" />
+                              Due: {formatDate(assignment.dueDate)}
+                            </span>
+                            {assignment.status === 'due' && daysUntilDue >= 0 && (
+                              <span className={`flex items-center gap-1 ${daysUntilDue <= 1 ? 'text-destructive' : ''} group-hover:scale-105 transition-transform duration-300`}>
+                                <Clock className="h-3 w-3" />
+                                {daysUntilDue === 0 ? 'Due today' : `${daysUntilDue} day${daysUntilDue !== 1 ? 's' : ''} left`}
+                              </span>
+                            )}
                           </div>
                         </div>
-                      )}
+                      </div>
                       
-                      <Badge variant={getStatusColor(assignment.status)}>
-                        {assignment.status}
-                      </Badge>
-                      
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => setSelectedAssignment(assignment)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </SheetTrigger>
+                      <div className="flex items-center gap-3 relative z-10">
+                        {assignment.grade && (
+                          <div className="text-right group-hover:scale-105 transition-transform duration-300">
+                            <div className="font-semibold group-hover:text-primary transition-colors duration-300">{assignment.grade}%</div>
+                            <div className="text-xs text-muted-foreground">
+                              {assignment.maxGrade ? `/ ${assignment.maxGrade}` : ''}
+                            </div>
+                          </div>
+                        )}
+                        
+                        <Badge 
+                          variant={getStatusColor(assignment.status)}
+                          className="group-hover:scale-105 transition-transform duration-300"
+                        >
+                          {assignment.status}
+                        </Badge>
+                        
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              className="parent-button group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300"
+                              onClick={() => {
+                                setSelectedAssignment(assignment);
+                                // Smooth scroll to top when opening assignment details
+                                setTimeout(() => {
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }, 100);
+                              }}
+                            >
+                              <Eye className="icon-hover h-4 w-4 group-hover:text-primary transition-colors duration-300" />
+                            </Button>
+                          </SheetTrigger>
                         <SheetContent className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>{assignment.title}</SheetTitle>
@@ -347,6 +368,7 @@ export default function ParentAssignments() {
                           </div>
                         </SheetContent>
                       </Sheet>
+                    </div>
                     </div>
                   </div>
                 );

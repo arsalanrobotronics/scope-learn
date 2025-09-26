@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Parent Portal Animations */
+@import './styles/parent-portal.css';
+
 /* LMS Design System - Modern Educational Platform Theme */
 
 @layer base {

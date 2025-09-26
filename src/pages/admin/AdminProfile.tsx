@@ -12,9 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from '@/lib/store/authStore';
-import { ChildSwitcher } from '@/components/parent/ChildSwitcher';
 
-export default function ParentSettings() {
+export default function AdminProfile() {
   const session = useSession();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +23,7 @@ export default function ParentSettings() {
     email: session?.email || '',
     phone: '+1 (555) 123-4567',
     location: 'New York, NY',
-    bio: 'Dedicated parent supporting my child\'s educational journey.',
+    bio: 'Dedicated administrator ensuring smooth operations and excellent educational experiences.',
     timezone: 'America/New_York',
     language: 'English',
     currentPassword: '',
@@ -35,11 +34,10 @@ export default function ParentSettings() {
   const [preferences, setPreferences] = useState({
     emailNotifications: true,
     pushNotifications: true,
-    gradeAlerts: true,
-    assignmentReminders: true,
-    classUpdates: true,
-    paymentReminders: true,
-    teacherMessages: true,
+    systemAlerts: true,
+    userUpdates: true,
+    billingAlerts: true,
+    securityNotifications: true,
     compactView: false,
     autoSave: true,
   });
@@ -82,16 +80,14 @@ export default function ParentSettings() {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
+    <div className="flex-1 space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Profile & Settings</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Profile & Settings</h1>
           <p className="text-muted-foreground">
             Manage your account information and preferences
           </p>
         </div>
-        <ChildSwitcher />
       </div>
 
       <Tabs defaultValue="profile" className="space-y-4">
@@ -300,76 +296,11 @@ export default function ParentSettings() {
             <CardHeader>
               <CardTitle>Notification Preferences</CardTitle>
               <CardDescription>
-                Choose what notifications you'd like to receive about your child's progress
+                Choose what notifications you'd like to receive
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Grade Alerts</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Be notified when new grades are available
-                    </p>
-                  </div>
-                  <Switch
-                    checked={preferences.gradeAlerts}
-                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, gradeAlerts: checked }))}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Assignment Reminders</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Get reminded about upcoming assignment deadlines
-                    </p>
-                  </div>
-                  <Switch
-                    checked={preferences.assignmentReminders}
-                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, assignmentReminders: checked }))}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Class Updates</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive updates about class changes
-                    </p>
-                  </div>
-                  <Switch
-                    checked={preferences.classUpdates}
-                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, classUpdates: checked }))}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Payment Reminders</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Alerts about upcoming payment due dates
-                    </p>
-                  </div>
-                  <Switch
-                    checked={preferences.paymentReminders}
-                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, paymentReminders: checked }))}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Teacher Messages</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Instant notifications for new messages from teachers
-                    </p>
-                  </div>
-                  <Switch
-                    checked={preferences.teacherMessages}
-                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, teacherMessages: checked }))}
-                  />
-                </div>
-
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Notifications</Label>
@@ -395,6 +326,58 @@ export default function ParentSettings() {
                     onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, pushNotifications: checked }))}
                   />
                 </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>System Alerts</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Critical system notifications and alerts
+                    </p>
+                  </div>
+                  <Switch
+                    checked={preferences.systemAlerts}
+                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, systemAlerts: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>User Updates</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Notifications about new users and registrations
+                    </p>
+                  </div>
+                  <Switch
+                    checked={preferences.userUpdates}
+                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, userUpdates: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Billing Alerts</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Payment and billing related notifications
+                    </p>
+                  </div>
+                  <Switch
+                    checked={preferences.billingAlerts}
+                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, billingAlerts: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Security Notifications</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Security-related alerts and warnings
+                    </p>
+                  </div>
+                  <Switch
+                    checked={preferences.securityNotifications}
+                    onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, securityNotifications: checked }))}
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -403,7 +386,7 @@ export default function ParentSettings() {
             <CardHeader>
               <CardTitle>Display Preferences</CardTitle>
               <CardDescription>
-                Customize your portal experience
+                Customize your administrative experience
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

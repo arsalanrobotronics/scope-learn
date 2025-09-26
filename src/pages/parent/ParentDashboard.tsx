@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress"; 
-import { BookOpen, Calendar, FileText, GraduationCap, Clock, MessageSquare, AlertCircle } from "lucide-react";
+import { BookOpen, Calendar, FileText, GraduationCap, Clock, MessageSquare, AlertCircle, Eye } from "lucide-react";
 import { ChildSwitcher } from '@/components/parent/ChildSwitcher';
 import { useParentContext, useParentStore } from '@/lib/store/parentStore';
 import { parentService } from '@/lib/mocks/parent';
@@ -102,8 +102,8 @@ const ParentDashboard = () => {
     status: getGradeStatus(grade.grade)
   })) || [];
 
-  // Get today's classes (filter live classes)
-  const todaysClasses = classes?.filter(cls => cls.isLive || cls.status === 'active').slice(0, 2) || [];
+  // Get today's classes (filter active classes, but don't allow joining)
+  const todaysClasses = classes?.filter(cls => cls.status === 'active').slice(0, 2) || [];
 
   if (isLoading && !activeChild) {
     return (
@@ -286,10 +286,9 @@ const ParentDashboard = () => {
                         Live
                       </Badge>
                     )}
-                    <Button size="sm" variant="outline" asChild>
-                      <a href={classItem.meetingLink} target="_blank" rel="noopener noreferrer">
-                        Join Class
-                      </a>
+                    <Button size="sm" variant="outline" disabled>
+                      <Eye className="mr-2 h-4 w-4" />
+                      View Only
                     </Button>
                   </div>
                 </div>

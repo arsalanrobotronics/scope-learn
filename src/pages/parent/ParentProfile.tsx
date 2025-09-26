@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useSession } from '@/lib/store/authStore';
 import { ChildSwitcher } from '@/components/parent/ChildSwitcher';
 
-export default function ParentSettings() {
+export default function ParentProfile() {
   const session = useSession();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);

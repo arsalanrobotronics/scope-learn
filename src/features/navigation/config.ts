@@ -10,7 +10,6 @@ import {
   PenTool,
   GraduationCap,
   Bell,
-  Settings,
   BarChart3,
   Receipt
 } from 'lucide-react';
@@ -299,17 +298,6 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           icon: Bell, 
           label: 'Notifications',
           description: 'Important updates'
-        },
-      ]
-    },
-    {
-      title: 'Settings',
-      items: [
-        { 
-          href: '/parent/settings', 
-          icon: Settings, 
-          label: 'Settings',
-          description: 'Profile and preferences'
         },
       ]
     }

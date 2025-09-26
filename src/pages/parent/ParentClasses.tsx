@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '@/styles/parent-portal.css';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,9 +17,8 @@ import {
   Clock, 
   MapPin, 
   Search, 
-  Video, 
   AlertCircle,
-  ExternalLink 
+  Eye 
 } from 'lucide-react';
 import { ChildSwitcher } from '@/components/parent/ChildSwitcher';
 import { useParentContext, useParentStore } from '@/lib/store/parentStore';
@@ -76,10 +76,9 @@ export default function ParentClasses() {
     }
   };
 
-  const handleJoinClass = (classItem: ParentClass) => {
-    if (classItem.meetingLink) {
-      window.open(classItem.meetingLink, '_blank', 'noopener,noreferrer');
-    }
+  const handleViewClass = (classItem: ParentClass) => {
+    // View class details only - no joining allowed for parents
+    console.log('Viewing class details:', classItem.name);
   };
 
   if (!activeChild) {
@@ -143,72 +142,84 @@ export default function ParentClasses() {
         </div>
       ) : filteredClasses.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredClasses.map((classItem) => (
-            <Card key={classItem.id} className="relative">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-lg">{classItem.name}</CardTitle>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={getStatusColor(classItem.status)}>
-                      {classItem.status}
-                    </Badge>
-                    {classItem.isLive && (
-                      <Badge variant="destructive" className="animate-pulse">
-                        Live
+          {filteredClasses.map((classItem, index) => (
+            <div 
+              key={classItem.id} 
+              className="group perspective-1000 stagger-item"
+              style={{ 
+                animation: `slideInUp 0.6s ease-out ${index * 0.1}s both` 
+              }}
+            >
+              <Card className="parent-card relative cursor-pointer transform-gpu bg-gradient-to-br from-background to-muted/20 overflow-hidden">
+                <div className="gradient-overlay absolute inset-0 rounded-lg" />
+                
+                <CardHeader className="relative z-10">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                        <BookOpen className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />
+                      </div>
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">
+                        {classItem.name}
+                      </CardTitle>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant={getStatusColor(classItem.status)}
+                        className="group-hover:scale-105 transition-transform duration-300"
+                      >
+                        {classItem.status}
                       </Badge>
+                      {classItem.isLive && (
+                        <Badge variant="destructive" className="animate-pulse group-hover:scale-105 transition-transform duration-300">
+                          Live
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <CardDescription className="group-hover:text-foreground/80 transition-colors duration-300">
+                    with {classItem.tutor}
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent className="space-y-4 relative z-10">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground/70 transition-colors duration-300">
+                      <Clock className="h-4 w-4 group-hover:text-primary transition-colors duration-300" />
+                      <span>{classItem.schedule}</span>
+                    </div>
+                    {classItem.room && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground/70 transition-colors duration-300">
+                        <MapPin className="h-4 w-4 group-hover:text-primary transition-colors duration-300" />
+                        <span>{classItem.room}</span>
+                      </div>
                     )}
                   </div>
-                </div>
-                <CardDescription>
-                  with {classItem.tutor}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{classItem.schedule}</span>
-                  </div>
-                  {classItem.room && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4" />
-                      <span>{classItem.room}</span>
-                    </div>
-                  )}
-                </div>
 
-                <div className="pt-4 space-y-2">
-                  {classItem.isLive ? (
-                    <Button 
-                      className="w-full" 
-                      onClick={() => handleJoinClass(classItem)}
-                    >
-                      <Video className="mr-2 h-4 w-4" />
-                      Join Live Class
-                    </Button>
-                  ) : (
+                  <div className="pt-4 space-y-2">
                     <Button 
                       variant="outline" 
-                      className="w-full"
-                      onClick={() => handleJoinClass(classItem)}
+                      className="parent-button w-full group-hover:bg-primary/10 group-hover:border-primary/30 transition-all duration-300"
+                      onClick={() => handleViewClass(classItem)}
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <Eye className="icon-hover mr-2 h-4 w-4" />
                       View Class Details
                     </Button>
-                  )}
-                  
-                  <div className="text-xs text-muted-foreground text-center">
-                    <span className="inline-flex items-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
-                      View-only access
-                    </span>
+                    
+                    <div className="text-xs text-muted-foreground text-center group-hover:text-foreground/60 transition-colors duration-300">
+                      <span className="inline-flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        View-only access
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-4 right-4 w-2 h-2 bg-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" />
+                <div className="absolute bottom-4 left-4 w-1 h-1 bg-secondary/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200" />
+              </Card>
+            </div>
           ))}
         </div>
       ) : (
@@ -255,7 +266,7 @@ export default function ParentClasses() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Live Now</CardTitle>
-              <Video className="h-4 w-4 text-muted-foreground" />
+              <Eye className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">

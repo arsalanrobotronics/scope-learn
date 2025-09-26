@@ -7,4 +7,4 @@ export { default as ParentResources } from './ParentResources';
 export { default as ParentBilling } from './ParentBilling';
 export { default as ParentMessages } from './ParentMessages';
 export { default as ParentNotifications } from './ParentNotifications';
-export { default as ParentSettings } from './ParentSettings';
+export { default as ParentProfile } from './ParentProfile';
