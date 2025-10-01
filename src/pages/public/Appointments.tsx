@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
-  GraduationCap, 
   Calendar, 
   Clock, 
   Users, 
@@ -21,6 +20,11 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { ModernNavbar } from "@/components/common/ModernNavbar";
+import { ModernFooter } from "@/components/common/ModernFooter";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggeredReveal } from "@/components/animations/StaggeredReveal";
+import { motion } from "framer-motion";
 
 export default function Appointments() {
   const [formData, setFormData] = useState({
@@ -105,94 +109,89 @@ export default function Appointments() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-border/50 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center">
-                <GraduationCap className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">MBEST</h1>
-                <p className="text-sm text-muted-foreground">Tutoring Centre</p>
-              </div>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
-              <Link to="/about" className="text-foreground hover:text-primary transition-colors">About</Link>
-              <Link to="/services" className="text-foreground hover:text-primary transition-colors">Services</Link>
-              <Link to="/appointments" className="text-primary font-medium">Booking</Link>
-              <Link to="/resources" className="text-foreground hover:text-primary transition-colors">Resources</Link>
-              <Link to="/contact" className="text-foreground hover:text-primary transition-colors">Contact</Link>
-              <Link to="/portal">
-                <Button variant="outline" size="sm">
-                  Portal Login
-                </Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      <ModernNavbar />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
         <div className="container mx-auto text-center">
-          <Badge variant="secondary" className="mb-6">
-            Easy Online Booking
-          </Badge>
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-            Book Your
-            <br />
-            <span className="bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
-              Consultation
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Schedule your free consultation and take the first step towards 
-            academic excellence with our expert tutors.
-          </p>
+          <ScrollReveal direction="up">
+            <Badge variant="secondary" className="mb-6">
+              Easy Online Booking
+            </Badge>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.1}>
+            <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6">
+              Book Your
+              <br />
+              <span className="bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
+                Consultation
+              </span>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.2}>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Schedule your free consultation and take the first step towards 
+              academic excellence with our expert tutors.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Booking Features */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4 bg-card/50">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold text-foreground mb-4">Booking Features</h3>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our advanced booking system makes scheduling sessions convenient and hassle-free.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-4 gap-8">
+          <ScrollReveal direction="up">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl font-bold text-foreground mb-4">Booking Features</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Our advanced booking system makes scheduling sessions convenient and hassle-free.
+              </p>
+            </div>
+          </ScrollReveal>
+          
+          <StaggeredReveal staggerDelay={0.1}>
             {features.map((feature, index) => (
-              <Card key={index} className="border-0 shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4 flex justify-center">{feature.icon}</div>
-                  <h4 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="border-0 shadow-lg bg-card hover:shadow-2xl transition-all h-full group">
+                  <CardContent className="p-6 text-center">
+                    <motion.div 
+                      className="mb-4 flex justify-center"
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      {feature.icon}
+                    </motion.div>
+                    <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{feature.title}</h4>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </StaggeredReveal>
         </div>
       </section>
 
       {/* Booking Form */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
-            <CardHeader className="text-center pb-8">
-              <CardTitle className="text-3xl font-bold text-foreground mb-4">
-                Book Your Free Consultation
-              </CardTitle>
-              <p className="text-muted-foreground">
-                Fill out the form below and we'll contact you within 24 hours to schedule your session.
-              </p>
-            </CardHeader>
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
+          <ScrollReveal direction="scale">
+            <Card className="border-0 shadow-2xl bg-card">
+              <CardHeader className="text-center pb-8">
+                <CardTitle className="text-3xl font-bold text-foreground mb-4">
+                  Book Your Free Consultation
+                </CardTitle>
+                <p className="text-muted-foreground">
+                  Fill out the form below and we'll contact you within 24 hours to schedule your session.
+                </p>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* ... keep existing code (form fields) */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="studentName">Student Name *</Label>
@@ -321,19 +320,22 @@ export default function Appointments() {
                   />
                 </div>
 
-                <div className="pt-6">
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full bg-gradient-primary text-white"
-                  >
-                    Submit Booking Request
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                  <div className="pt-6">
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Button 
+                        type="submit" 
+                        size="lg" 
+                        className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
+                      >
+                        Submit Booking Request
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Button>
+                    </motion.div>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -391,24 +393,7 @@ export default function Appointments() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-4 bg-white/50 border-t border-border/50">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center">
-              <GraduationCap className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h4 className="text-xl font-bold text-foreground">MBEST</h4>
-              <p className="text-sm text-muted-foreground">Tutoring Centre</p>
-            </div>
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Conquering mathematical challenges, step by step, for over 25 years.
-          </p>
-          <p className="text-sm text-muted-foreground">&copy; 2024 MBEST Tutoring Centre. All rights reserved.</p>
-        </div>
-      </footer>
+      <ModernFooter />
     </div>
   );
 }
