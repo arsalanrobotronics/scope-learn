@@ -1,152 +1,263 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { MessageSquare, Send, Search, User, Clock, Paperclip } from "lucide-react";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { 
+  MessageSquare, 
+  Send, 
+  Search, 
+  Plus, 
+  AlertCircle,
+  Clock,
+  User,
+  Paperclip
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const StudentMessaging = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedThread, setSelectedThread] = useState<string | null>('1');
+  const [newMessageOpen, setNewMessageOpen] = useState(false);
+  const [newMessageRecipient, setNewMessageRecipient] = useState('');
+  const [newMessageSubject, setNewMessageSubject] = useState('');
+  const [newMessageContent, setNewMessageContent] = useState('');
+  const { toast } = useToast();
+  
+  // Mock conversations data
   const conversations = [
     {
-      id: "1",
-      name: "Mr. Smith",
-      role: "Mathematics Tutor",
-      lastMessage: "Great work on your latest assignment! Keep it up.",
-      timestamp: "2024-01-22 10:30",
-      unread: 0,
-      avatar: "/avatars/tutor1.jpg",
-      status: "online"
+      id: '1',
+      from: 'Mr. Smith',
+      role: 'Mathematics Tutor',
+      subject: 'Assignment Feedback',
+      content: 'Great work on your latest assignment! Keep it up.',
+      timestamp: '2024-01-22T10:30:00Z',
+      isRead: true,
+      threadId: '1'
     },
     {
-      id: "2", 
-      name: "Dr. Johnson",
-      role: "Physics Tutor",
-      lastMessage: "The lab report deadline has been extended to Friday.",
-      timestamp: "2024-01-22 09:15",
-      unread: 2,
-      avatar: "/avatars/tutor2.jpg", 
-      status: "offline"
+      id: '2',
+      from: 'Dr. Johnson',
+      role: 'Physics Tutor', 
+      subject: 'Lab Report Extension',
+      content: 'The lab report deadline has been extended to Friday.',
+      timestamp: '2024-01-22T09:15:00Z',
+      isRead: false,
+      threadId: '2'
     },
     {
-      id: "3",
-      name: "Ms. Williams",
-      role: "English Literature Tutor",
-      lastMessage: "Can we schedule a meeting to discuss your essay?",
-      timestamp: "2024-01-21 16:45",
-      unread: 1,
-      avatar: "/avatars/tutor3.jpg",
-      status: "online"
+      id: '3',
+      from: 'Ms. Williams',
+      role: 'English Literature Tutor',
+      subject: 'Essay Discussion',
+      content: 'Can we schedule a meeting to discuss your essay?',
+      timestamp: '2024-01-21T16:45:00Z',
+      isRead: false,
+      threadId: '3'
     },
     {
-      id: "4",
-      name: "Prof. Davis", 
-      role: "Computer Science Tutor",
-      lastMessage: "Here are some additional resources for the programming project.",
-      timestamp: "2024-01-21 14:20",
-      unread: 0,
-      avatar: "/avatars/tutor4.jpg",
-      status: "away"
+      id: '4',
+      from: 'Prof. Davis',
+      role: 'Computer Science Tutor',
+      subject: 'Programming Resources',
+      content: 'Here are some additional resources for the programming project.',
+      timestamp: '2024-01-21T14:20:00Z',
+      isRead: true,
+      threadId: '4'
     },
     {
-      id: "5",
-      name: "Academic Office",
-      role: "Administration",
-      lastMessage: "Reminder: Registration for next semester opens next week.",
-      timestamp: "2024-01-20 11:00",
-      unread: 0,
-      avatar: "/avatars/admin.jpg",
-      status: "offline"
+      id: '5',
+      from: 'Academic Office',
+      role: 'Administration',
+      subject: 'Registration Reminder',
+      content: 'Reminder: Registration for next semester opens next week.',
+      timestamp: '2024-01-20T11:00:00Z',
+      isRead: true,
+      threadId: '5'
     }
   ];
 
-  const selectedConversation = conversations[0];
-  
-  const messages = [
-    {
-      id: "1",
-      sender: "Mr. Smith",
-      content: "Hi! I wanted to follow up on your calculus assignment from last week.",
-      timestamp: "2024-01-22 09:00",
-      isOwn: false
-    },
-    {
-      id: "2",
-      sender: "You",
-      content: "Hello Mr. Smith! Thank you for the feedback. I found the integration problems quite challenging.",
-      timestamp: "2024-01-22 09:15", 
-      isOwn: true
-    },
-    {
-      id: "3",
-      sender: "Mr. Smith",
-      content: "That's completely normal! Integration can be tricky at first. Would you like me to schedule some extra practice sessions?",
-      timestamp: "2024-01-22 09:18",
-      isOwn: false
-    },
-    {
-      id: "4",
-      sender: "You", 
-      content: "That would be very helpful! When would be a good time for you?",
-      timestamp: "2024-01-22 09:25",
-      isOwn: true
-    },
-    {
-      id: "5",
-      sender: "Mr. Smith",
-      content: "Great work on your latest assignment! Keep it up.",
-      timestamp: "2024-01-22 10:30",
-      isOwn: false
+  // Group messages by thread
+  const messageThreads = conversations.reduce((threads, message) => {
+    const threadId = message.threadId;
+    if (!threads[threadId]) {
+      threads[threadId] = [];
     }
-  ];
+    threads[threadId].push(message);
+    return threads;
+  }, {} as Record<string, typeof conversations>);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'online': return 'bg-green-500';
-      case 'away': return 'bg-yellow-500';
-      case 'offline': return 'bg-gray-400';
-      default: return 'bg-gray-400';
-    }
+  // Get thread preview (latest message)
+  const getThreadPreview = (threadId: string) => {
+    const threadMessages = messageThreads[threadId] || [];
+    return threadMessages.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
   };
+
+  // Filter threads based on search
+  const filteredThreadIds = Object.keys(messageThreads).filter(threadId => {
+    const preview = getThreadPreview(threadId);
+    return preview.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           preview.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           preview.content.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (date.toDateString() === today.toDateString()) {
-      return 'Today';
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday';
+    const now = new Date();
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
+    
+    if (diffInHours < 24) {
+      return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    } else if (diffInHours < 168) { // 7 days
+      return date.toLocaleDateString('en-US', { weekday: 'short' });
     } else {
-      return date.toLocaleDateString();
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric' 
+      });
     }
   };
 
+  const handleThreadClick = (threadId: string) => {
+    setSelectedThread(threadId);
+  };
+
+  const handleSendMessage = () => {
+    if (!newMessageRecipient || !newMessageSubject || !newMessageContent) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Message Sent",
+      description: `Your message has been sent to ${newMessageRecipient}.`,
+    });
+
+    // Reset form
+    setNewMessageRecipient('');
+    setNewMessageSubject('');
+    setNewMessageContent('');
+    setNewMessageOpen(false);
+  };
+
+  const getUnreadCount = (threadId: string) => {
+    const threadMessages = messageThreads[threadId] || [];
+    return threadMessages.filter(msg => !msg.isRead).length;
+  };
+
+  // Mock tutors/admin for recipient selection
+  const availableRecipients = [
+    'Mr. Smith (Mathematics)',
+    'Dr. Johnson (Physics)',
+    'Ms. Williams (English)',
+    'Prof. Davis (Computer Science)',
+    'Academic Office',
+    'Student Support'
+  ];
+
   return (
-    <div className="flex-1 p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-6 p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Messages</h1>
+          <h1 className="text-3xl font-bold text-foreground">Messages</h1>
           <p className="text-muted-foreground">
-            Communicate with your tutors and classmates
+            Communicate with your tutors and administrators
           </p>
         </div>
-        <Button>
-          <MessageSquare className="mr-2 h-4 w-4" />
-          New Message
-        </Button>
+        <div className="flex items-center gap-3">
+          <Dialog open={newMessageOpen} onOpenChange={setNewMessageOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Message
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[525px]">
+              <DialogHeader>
+                <DialogTitle>Compose New Message</DialogTitle>
+                <DialogDescription>
+                  Send a message to your tutors or administrators
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">To</label>
+                  <Select value={newMessageRecipient} onValueChange={setNewMessageRecipient}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select recipient" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableRecipients.map(recipient => (
+                        <SelectItem key={recipient} value={recipient}>
+                          {recipient}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Subject</label>
+                  <Input
+                    placeholder="Enter subject"
+                    value={newMessageSubject}
+                    onChange={(e) => setNewMessageSubject(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Message</label>
+                  <Textarea
+                    placeholder="Type your message here..."
+                    value={newMessageContent}
+                    onChange={(e) => setNewMessageContent(e.target.value)}
+                    rows={6}
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setNewMessageOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSendMessage}>
+                  <Send className="mr-2 h-4 w-4" />
+                  Send Message
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[700px]">
-        {/* Conversations List */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Message List */}
         <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -156,181 +267,162 @@ const StudentMessaging = () => {
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search conversations..."
+                placeholder="Search messages..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="space-y-0 max-h-[500px] overflow-y-auto">
-              {conversations.map((conversation, index) => (
-                <div key={conversation.id}>
-                  <div className={`p-4 hover:bg-muted/50 cursor-pointer transition-colors ${index === 0 ? 'bg-muted' : ''}`}>
-                    <div className="flex items-start space-x-4">
-                      <div className="relative">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={conversation.avatar} />
+            {filteredThreadIds.length > 0 ? (
+              <div className="space-y-1">
+                {filteredThreadIds.map(threadId => {
+                  const preview = getThreadPreview(threadId);
+                  const unreadCount = getUnreadCount(threadId);
+                  const isSelected = selectedThread === threadId;
+                  
+                  return (
+                    <div
+                      key={threadId}
+                      className={`p-4 cursor-pointer hover:bg-muted/50 transition-colors border-l-2 ${
+                        isSelected ? 'border-l-primary bg-muted/50' : 'border-l-transparent'
+                      }`}
+                      onClick={() => handleThreadClick(threadId)}
+                    >
+                      <div className="flex items-start gap-3">
+                        <Avatar className="h-8 w-8">
                           <AvatarFallback>
-                            <User className="h-4 w-4" />
+                            {preview.from.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
-                        <div className={`absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(conversation.status)}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-semibold truncate">
-                            {conversation.name}
-                          </h4>
-                          {conversation.unread > 0 && (
-                            <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
-                              {conversation.unread}
-                            </Badge>
-                          )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <p className={`text-sm font-medium truncate ${!preview.isRead ? 'font-semibold' : ''}`}>
+                              {preview.from}
+                            </p>
+                            <div className="flex items-center gap-1">
+                              {unreadCount > 0 && (
+                                <Badge variant="destructive" className="text-xs px-1.5 py-0">
+                                  {unreadCount}
+                                </Badge>
+                              )}
+                              <span className="text-xs text-muted-foreground">
+                                {formatTime(preview.timestamp)}
+                              </span>
+                            </div>
+                          </div>
+                          <p className={`text-sm truncate ${!preview.isRead ? 'font-medium' : 'text-muted-foreground'}`}>
+                            {preview.subject}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate mt-1">
+                            {preview.content}
+                          </p>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                          {conversation.role}
-                        </p>
-                        <p className="text-sm text-muted-foreground truncate mt-1">
-                          {conversation.lastMessage}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {formatDate(conversation.timestamp)} • {formatTime(conversation.timestamp)}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                  {index < conversations.length - 1 && <Separator />}
-                </div>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Messages</h3>
+                <p className="text-muted-foreground text-sm">
+                  {searchTerm ? 'No messages match your search.' : 'No messages yet.'}
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Chat Area */}
-        <Card className="lg:col-span-2 flex flex-col">
-          {/* Chat Header */}
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={selectedConversation.avatar} />
-                    <AvatarFallback>
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className={`absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(selectedConversation.status)}`} />
+        {/* Message Thread */}
+        <Card className="lg:col-span-2">
+          {selectedThread ? (
+            <>
+              <CardHeader>
+                <CardTitle>{getThreadPreview(selectedThread).subject}</CardTitle>
+                <CardDescription>
+                  Conversation with {getThreadPreview(selectedThread).from}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="max-h-96 overflow-y-auto space-y-4">
+                  {messageThreads[selectedThread]
+                    ?.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+                    .map((message) => (
+                      <div key={message.id} className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="text-xs">
+                              {message.from.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm font-medium">{message.from}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(message.timestamp).toLocaleString()}
+                          </span>
+                          {!message.isRead && (
+                            <Badge variant="secondary" className="text-xs">New</Badge>
+                          )}
+                        </div>
+                        <div className="ml-8 p-3 bg-muted rounded-lg">
+                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        </div>
+                      </div>
+                    ))}
                 </div>
-                <div>
-                  <CardTitle className="text-lg">{selectedConversation.name}</CardTitle>
-                  <CardDescription>{selectedConversation.role}</CardDescription>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <div className={`h-2 w-2 rounded-full ${getStatusColor(selectedConversation.status)}`} />
-                  {selectedConversation.status}
-                </Badge>
-              </div>
-            </div>
-          </CardHeader>
-
-          <Separator />
-
-          {/* Messages */}
-          <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[400px]">
-            {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[70%] ${message.isOwn ? 'order-1' : 'order-2'}`}>
-                  <div className={`rounded-lg p-3 ${message.isOwn 
-                    ? 'bg-primary text-primary-foreground ml-auto' 
-                    : 'bg-muted'
-                  }`}>
-                    <p className="text-sm">{message.content}</p>
+                
+                <Separator />
+                
+                {/* Reply Section */}
+                <div className="space-y-3">
+                  <Textarea
+                    placeholder="Type your reply..."
+                    rows={3}
+                  />
+                  <div className="flex justify-between items-center">
+                    <Button variant="outline" size="sm">
+                      <Paperclip className="mr-2 h-4 w-4" />
+                      Attach File
+                    </Button>
+                    <Button size="sm">
+                      <Send className="mr-2 h-4 w-4" />
+                      Send Reply
+                    </Button>
                   </div>
-                  <div className={`flex items-center mt-1 text-xs text-muted-foreground ${message.isOwn ? 'justify-end' : 'justify-start'}`}>
-                    <Clock className="h-3 w-3 mr-1" />
-                    {formatTime(message.timestamp)}
-                  </div>
                 </div>
-              </div>
-            ))}
-          </CardContent>
-
-          <Separator />
-
-          {/* Message Input */}
-          <CardContent className="p-4">
-            <div className="flex space-x-2">
-              <Button variant="outline" size="icon" className="shrink-0">
-                <Paperclip className="h-4 w-4" />
-              </Button>
-              <div className="flex-1 space-y-2">
-                <Textarea
-                  placeholder="Type your message..."
-                  className="min-h-[60px] resize-none"
-                />
-              </div>
-              <Button size="icon" className="shrink-0">
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
+              </CardContent>
+            </>
+          ) : (
+            <CardContent className="flex flex-col items-center justify-center h-96">
+              <MessageSquare className="h-16 w-16 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Select a Conversation</h3>
+              <p className="text-muted-foreground text-center">
+                Choose a conversation from the list to view messages
+              </p>
+            </CardContent>
+          )}
         </Card>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-4 mt-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Conversations</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{conversations.length}</div>
-            <p className="text-xs text-muted-foreground">Active chats</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unread Messages</CardTitle>
-            <Badge variant="destructive" className="h-4 w-4 p-0 flex items-center justify-center text-xs">
-              {conversations.reduce((sum, conv) => sum + conv.unread, 0)}
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {conversations.reduce((sum, conv) => sum + conv.unread, 0)}
+      {/* Communication Guidelines */}
+      <Card className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
+        <CardContent className="pt-6">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                Communication Guidelines
+              </p>
+              <p className="text-sm text-amber-700 dark:text-amber-300">
+                You can message your tutors and school administrators. 
+                All messages are monitored for safety and educational purposes.
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground">Need attention</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tutors Online</CardTitle>
-            <div className="h-2 w-2 rounded-full bg-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {conversations.filter(conv => conv.status === 'online').length}
-            </div>
-            <p className="text-xs text-muted-foreground">Available now</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Response Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">&lt; 1h</div>
-            <p className="text-xs text-muted-foreground">Average response</p>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

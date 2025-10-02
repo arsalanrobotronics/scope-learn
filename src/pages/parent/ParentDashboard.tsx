@@ -288,7 +288,7 @@ const ParentDashboard = () => {
                     )}
                     <Button size="sm" variant="outline" disabled>
                       <Eye className="mr-2 h-4 w-4" />
-                      View Only
+                      View Only (Parent Access)
                     </Button>
                   </div>
                 </div>

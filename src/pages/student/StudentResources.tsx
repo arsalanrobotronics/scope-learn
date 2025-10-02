@@ -7,11 +7,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Library, Download, Search, FileText, Video, Link, BookOpen, Star } from "lucide-react";
 import { useFavoritesStore } from '@/lib/store/favoritesStore';
 import { useToast } from '@/hooks/use-toast';
+import { ResourceRequestModal } from '@/components/modals/ResourceRequestModal';
+import { ResourcePreviewModal } from '@/components/modals/ResourcePreviewModal';
 
 const StudentResources = () => {
   const { toast } = useToast();
   const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
-  
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [selectedResource, setSelectedResource] = useState<any>(null);
   const handleSaveToFavorites = (resource: any) => {
     if (isFavorite(resource.id)) {
       removeFromFavorites(resource.id);
@@ -25,6 +29,18 @@ const StudentResources = () => {
       });
       toast({ title: "Added to Favorites", description: `${resource.title} saved to favorites.` });
     }
+  };
+
+  const handlePreview = (resource: any) => {
+    setSelectedResource(resource);
+    setPreviewModalOpen(true);
+  };
+
+  const handleDownload = (resource: any) => {
+    toast({ 
+      title: "Download Started", 
+      description: `Downloading ${resource.title}...` 
+    });
   };
   const resources = [
     {
@@ -160,7 +176,7 @@ const StudentResources = () => {
             Access course materials, textbooks, and learning resources
           </p>
         </div>
-        <Button onClick={() => toast({ title: "Resource Request", description: "Resource request form opened. Submit your request and we'll review it." })}>
+        <Button onClick={() => setRequestModalOpen(true)}>
           <BookOpen className="mr-2 h-4 w-4" />
           Request Resource
         </Button>
@@ -246,7 +262,7 @@ const StudentResources = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button size="sm">
+                    <Button size="sm" onClick={() => handleDownload(resource)}>
                       <Download className="mr-2 h-4 w-4" />
                       {resource.type === 'link' ? 'Open Link' : 'Download'}
                     </Button>
@@ -254,7 +270,7 @@ const StudentResources = () => {
                       <Star className={`mr-2 h-4 w-4 ${isFavorite(resource.id) ? 'fill-yellow-400 text-yellow-400' : ''}`} />
                       {isFavorite(resource.id) ? 'Remove Favorite' : 'Save to Favorites'}
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => toast({ title: "Preview", description: `Opening preview for ${resource.title}...` })}>
+                    <Button variant="outline" size="sm" onClick={() => handlePreview(resource)}>
                       Preview
                     </Button>
                   </div>
@@ -484,6 +500,21 @@ const StudentResources = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modals */}
+      <ResourceRequestModal 
+        open={requestModalOpen} 
+        onOpenChange={setRequestModalOpen} 
+      />
+      
+      <ResourcePreviewModal
+        open={previewModalOpen}
+        onOpenChange={setPreviewModalOpen}
+        resource={selectedResource}
+        onDownload={handleDownload}
+        onFavorite={handleSaveToFavorites}
+        isFavorite={selectedResource ? isFavorite(selectedResource.id) : false}
+      />
     </div>
   );
 };

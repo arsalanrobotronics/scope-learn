@@ -23,11 +23,14 @@ import {
 import { ChildSwitcher } from '@/components/parent/ChildSwitcher';
 import { useParentContext, useParentStore } from '@/lib/store/parentStore';
 import { parentService } from '@/lib/mocks/parent';
+import { ClassDetailsModal } from '@/components/modals/ClassDetailsModal';
 import type { ParentClass } from '@/lib/store/parentStore';
 
 export default function ParentClasses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedClass, setSelectedClass] = useState<ParentClass | null>(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   
   const {
     activeChild,
@@ -77,8 +80,27 @@ export default function ParentClasses() {
   };
 
   const handleViewClass = (classItem: ParentClass) => {
-    // View class details only - no joining allowed for parents
-    console.log('Viewing class details:', classItem.name);
+    // Convert ParentClass to ClassDetails format with additional mock data
+    const classDetails = {
+      ...classItem,
+      description: `This is a comprehensive ${classItem.name} course designed to provide students with fundamental knowledge and practical skills. The course covers essential topics and includes hands-on exercises to reinforce learning.`,
+      duration: '1 hour 30 minutes',
+      capacity: 25,
+      enrolled: 18,
+      nextSession: classItem.status === 'active' ? 'Tomorrow at 10:00 AM' : 'TBD',
+      materials: [
+        { id: '1', title: 'Course Syllabus', type: 'pdf' },
+        { id: '2', title: 'Introduction Video', type: 'video' },
+        { id: '3', title: 'Assignment Guidelines', type: 'pdf' }
+      ],
+      recentAnnouncements: [
+        { id: '1', title: 'Welcome to the new semester!', date: '2024-01-20' },
+        { id: '2', title: 'Assignment due dates updated', date: '2024-01-18' }
+      ]
+    };
+    
+    setSelectedClass(classDetails);
+    setDetailsModalOpen(true);
   };
 
   if (!activeChild) {
@@ -277,6 +299,13 @@ export default function ParentClasses() {
           </Card>
         </div>
       )}
+
+      {/* Class Details Modal */}
+      <ClassDetailsModal
+        open={detailsModalOpen}
+        onOpenChange={setDetailsModalOpen}
+        classDetails={selectedClass}
+      />
     </div>
   );
 }
