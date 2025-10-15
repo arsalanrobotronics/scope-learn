@@ -11,7 +11,8 @@ import {
   GraduationCap,
   Bell,
   BarChart3,
-  Receipt
+  Receipt,
+  ClipboardCheck
 } from 'lucide-react';
 import { UserRole } from '@/lib/types/auth';
 
@@ -67,6 +68,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           icon: Library, 
           label: 'Resources',
           description: 'Educational materials and content'
+        },
+        { 
+          href: '/admin/attendance', 
+          icon: ClipboardCheck, 
+          label: 'Attendance',
+          description: 'Attendance records and timesheets'
         },
       ]
     },
@@ -139,6 +146,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           label: 'Students',
           description: 'View student progress'
         },
+        { 
+          href: '/tutor/attendance', 
+          icon: ClipboardCheck, 
+          label: 'Attendance',
+          description: 'Mark attendance and track hours'
+        },
       ]
     },
     {
@@ -199,6 +212,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           label: 'Grades',
           description: 'Academic performance'
         },
+        { 
+          href: '/student/attendance', 
+          icon: ClipboardCheck, 
+          label: 'Attendance',
+          description: 'View your attendance records'
+        },
       ]
     },
     {
@@ -257,6 +276,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           icon: BarChart3, 
           label: 'Grades',
           description: 'Academic performance overview'
+        },
+        { 
+          href: '/parent/attendance', 
+          icon: ClipboardCheck, 
+          label: 'Attendance',
+          description: 'Monitor class attendance'
         },
       ]
     },

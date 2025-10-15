@@ -31,6 +31,7 @@ import AdminResources from "./pages/admin/AdminResources";
 import AdminBilling from "./pages/admin/AdminBilling";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminAttendance from "./pages/admin/AdminAttendance";
 
 // Student pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -39,6 +40,7 @@ import StudentAssignments from "./pages/student/StudentAssignments";
 import StudentGrades from "./pages/student/StudentGrades";
 import StudentResources from "./pages/student/StudentResources";
 import StudentMessaging from "./pages/student/StudentMessaging";
+import StudentAttendance from "./pages/student/StudentAttendance";
 
 // Tutor pages
 import TutorDashboard from "./pages/tutor/TutorDashboard";
@@ -47,6 +49,7 @@ import TutorStudents from "./pages/tutor/TutorStudents";
 import TutorAssignments from "./pages/tutor/TutorAssignments";
 import TutorResources from "./pages/tutor/TutorResources";
 import TutorMessaging from "./pages/tutor/TutorMessaging";
+import TutorAttendance from "./pages/tutor/TutorAttendance";
 
 // Parent pages
 import ParentDashboard from "./pages/parent/ParentDashboard";
@@ -58,6 +61,7 @@ import ParentBilling from "./pages/parent/ParentBilling";
 import ParentMessages from "./pages/parent/ParentMessages";
 import ParentNotifications from "./pages/parent/ParentNotifications";
 import ParentProfile from "./pages/parent/ParentProfile";
+import ParentAttendance from "./pages/parent/ParentAttendance";
 
 // Profile pages
 import ProfileSettings from "./pages/profile/ProfileSettings";
@@ -132,6 +136,11 @@ const App = () => (
                         <AdminUsers />
                       </ProtectedRoute>
                     } />
+                    <Route path="attendance" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminAttendance />
+                      </ProtectedRoute>
+                    } />
                     <Route path="profile" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <AdminProfile />
@@ -176,6 +185,11 @@ const App = () => (
                         <StudentMessaging />
                       </ProtectedRoute>
                     } />
+                    <Route path="attendance" element={
+                      <ProtectedRoute allowedRoles={['student']}>
+                        <StudentAttendance />
+                      </ProtectedRoute>
+                    } />
                     <Route path="profile" element={
                       <ProtectedRoute allowedRoles={['student']}>
                         <StudentProfile />
@@ -218,6 +232,11 @@ const App = () => (
                     <Route path="messaging" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorMessaging />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="attendance" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorAttendance />
                       </ProtectedRoute>
                     } />
                     <Route path="profile" element={
@@ -273,6 +292,11 @@ const App = () => (
                       <Route path="notifications" element={
                         <ProtectedRoute allowedRoles={['parent']}>
                           <ParentNotifications />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="attendance" element={
+                        <ProtectedRoute allowedRoles={['parent']}>
+                          <ParentAttendance />
                         </ProtectedRoute>
                       } />
                       <Route path="profile" element={
