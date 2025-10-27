@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, Users, Download, FileText, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, Users, Download, FileText, CheckCircle, UserCheck } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +38,12 @@ interface TimesheetEntry {
   mode: 'online' | 'offline';
   notes?: string;
   status: 'pending' | 'approved' | 'submitted';
+}
+
+interface Student {
+  id: string;
+  name: string;
+  status: 'present' | 'absent' | 'late';
 }
 
 export default function TutorAttendance() {
@@ -115,6 +121,19 @@ export default function TutorAttendance() {
 
   const [markAttendanceOpen, setMarkAttendanceOpen] = useState(false);
   const [addTimesheetOpen, setAddTimesheetOpen] = useState(false);
+  
+  // Sample student list - in real app, this would come from the selected class
+  const [students, setStudents] = useState<Student[]>([
+    { id: '1', name: 'Ahmed Hassan', status: 'present' },
+    { id: '2', name: 'Fatima Ali', status: 'present' },
+    { id: '3', name: 'Omar Khalid', status: 'present' },
+    { id: '4', name: 'Aisha Mohammed', status: 'present' },
+    { id: '5', name: 'Youssef Ibrahim', status: 'present' },
+  ]);
+
+  const updateStudentStatus = (studentId: string, status: 'present' | 'absent' | 'late') => {
+    setStudents(students.map(s => s.id === studentId ? { ...s, status } : s));
+  };
 
   const handleMarkAttendance = () => {
     toast({
@@ -237,14 +256,14 @@ export default function TutorAttendance() {
                       Mark Attendance
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
+                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                      <DialogTitle>Mark Attendance</DialogTitle>
+                      <DialogTitle>Mark Student Attendance</DialogTitle>
                       <DialogDescription>
-                        Record attendance for your class session
+                        Mark attendance for each student in your class
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       <div className="grid gap-4">
                         <div className="space-y-2">
                           <Label>Select Class</Label>
@@ -280,30 +299,77 @@ export default function TutorAttendance() {
                             </SelectContent>
                           </Select>
                         </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <Label>Present</Label>
-                            <Input type="number" placeholder="0" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Absent</Label>
-                            <Input type="number" placeholder="0" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Late</Label>
-                            <Input type="number" placeholder="0" />
+                      </div>
+
+                      {/* Student Attendance List */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label className="text-base font-semibold">Student Attendance</Label>
+                          <div className="flex gap-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                              Present: {students.filter(s => s.status === 'present').length}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                              Absent: {students.filter(s => s.status === 'absent').length}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                              Late: {students.filter(s => s.status === 'late').length}
+                            </span>
                           </div>
                         </div>
+                        <div className="border rounded-lg divide-y max-h-[300px] overflow-y-auto">
+                          {students.map((student) => (
+                            <div key={student.id} className="p-3 flex items-center justify-between hover:bg-muted/50 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <UserCheck className="h-4 w-4 text-muted-foreground" />
+                                <span className="font-medium">{student.name}</span>
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  variant={student.status === 'present' ? 'default' : 'outline'}
+                                  className={student.status === 'present' ? 'bg-green-600 hover:bg-green-700' : ''}
+                                  onClick={() => updateStudentStatus(student.id, 'present')}
+                                >
+                                  Present
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant={student.status === 'late' ? 'default' : 'outline'}
+                                  className={student.status === 'late' ? 'bg-orange-600 hover:bg-orange-700' : ''}
+                                  onClick={() => updateStudentStatus(student.id, 'late')}
+                                >
+                                  Late
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant={student.status === 'absent' ? 'default' : 'outline'}
+                                  className={student.status === 'absent' ? 'bg-red-600 hover:bg-red-700' : ''}
+                                  onClick={() => updateStudentStatus(student.id, 'absent')}
+                                >
+                                  Absent
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
                         <div className="space-y-2">
-                          <Label>Work Hours</Label>
+                          <Label>Work Hours (for billing)</Label>
                           <Input type="number" step="0.5" placeholder="2.0" />
                         </div>
                         <div className="space-y-2">
                           <Label>Notes (Optional)</Label>
-                          <Textarea placeholder="Add any additional notes..." />
+                          <Textarea placeholder="Add any additional notes about the class..." />
                         </div>
                       </div>
-                      <div className="flex justify-end gap-2">
+
+                      <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button variant="outline" onClick={() => setMarkAttendanceOpen(false)}>
                           Cancel
                         </Button>
