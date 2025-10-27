@@ -24,7 +24,6 @@ interface AttendanceRecord {
   absent: number;
   late: number;
   status: 'pending' | 'completed';
-  workHours: number;
 }
 
 interface TimesheetEntry {
@@ -59,8 +58,7 @@ export default function TutorAttendance() {
       present: 23,
       absent: 1,
       late: 1,
-      status: 'completed',
-      workHours: 2
+      status: 'completed'
     },
     {
       id: 'att-2',
@@ -73,8 +71,7 @@ export default function TutorAttendance() {
       present: 19,
       absent: 1,
       late: 0,
-      status: 'completed',
-      workHours: 1.5
+      status: 'completed'
     },
     {
       id: 'att-3',
@@ -87,8 +84,7 @@ export default function TutorAttendance() {
       present: 0,
       absent: 0,
       late: 0,
-      status: 'pending',
-      workHours: 0
+      status: 'pending'
     }
   ]);
 
@@ -360,10 +356,6 @@ export default function TutorAttendance() {
 
                       <div className="space-y-4">
                         <div className="space-y-2">
-                          <Label>Work Hours (for billing)</Label>
-                          <Input type="number" step="0.5" placeholder="2.0" />
-                        </div>
-                        <div className="space-y-2">
                           <Label>Notes (Optional)</Label>
                           <Textarea placeholder="Add any additional notes about the class..." />
                         </div>
@@ -388,7 +380,6 @@ export default function TutorAttendance() {
                     <TableHead>Date & Time</TableHead>
                     <TableHead>Mode</TableHead>
                     <TableHead>Attendance</TableHead>
-                    <TableHead>Hours</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -427,7 +418,6 @@ export default function TutorAttendance() {
                           <span className="text-muted-foreground text-sm">Not marked</span>
                         )}
                       </TableCell>
-                      <TableCell>{record.workHours > 0 ? `${record.workHours}h` : '-'}</TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(record.status)}>
                           {record.status}
