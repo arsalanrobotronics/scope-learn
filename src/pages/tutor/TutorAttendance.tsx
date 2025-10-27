@@ -163,9 +163,9 @@ export default function TutorAttendance() {
   const pendingAttendance = attendanceRecords.filter(r => r.status === 'pending').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold">Attendance & Timesheet</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Attendance & Timesheet</h1>
         <p className="text-muted-foreground mt-2">
           Mark attendance and track your work hours
         </p>

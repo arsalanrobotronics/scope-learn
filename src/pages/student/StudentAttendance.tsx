@@ -125,9 +125,9 @@ export default function StudentAttendance() {
   const totalLate = attendanceRecords.filter(r => r.status === 'late').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold">My Attendance</h1>
+        <h1 className="text-3xl font-bold tracking-tight">My Attendance</h1>
         <p className="text-muted-foreground mt-2">
           Track your class attendance and participation
         </p>

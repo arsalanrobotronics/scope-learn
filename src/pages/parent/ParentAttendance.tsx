@@ -129,10 +129,10 @@ export default function ParentAttendance() {
   const totalLate = attendanceRecords.filter(r => r.status === 'late').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Attendance Tracking</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Attendance Tracking</h1>
           <p className="text-muted-foreground mt-2">
             Monitor {activeChild?.name || 'your child'}'s class attendance in real-time
           </p>

@@ -166,9 +166,9 @@ export default function AdminAttendance() {
   const totalTutorHours = timesheetData.reduce((sum, t) => sum + t.totalHours, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold">Attendance & Timesheet Management</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Attendance & Timesheet Management</h1>
         <p className="text-muted-foreground mt-2">
           Monitor attendance records and manage tutor timesheets
         </p>
