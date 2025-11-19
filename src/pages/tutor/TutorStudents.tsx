@@ -15,7 +15,10 @@ import usersData from '@/data/users.json';
 interface Student {
   id: string;
   name: string;
+  family: string;
   email: string;
+  mobilePhone: string;
+  homePhone: string;
   avatar: string;
   enrollmentId: string;
   grade: string;
@@ -27,6 +30,7 @@ interface Student {
     total: number;
   };
   status: 'active' | 'inactive' | 'warning';
+  type: 'Child' | 'Adult';
 }
 
 export default function TutorStudents() {
@@ -35,60 +39,110 @@ export default function TutorStudents() {
   const [selectedClass, setSelectedClass] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  // Mock students data based on classes
+  // Mock students data based on classes (matching the document examples)
   const myClasses = classesData.filter(cls => cls.tutorId === 'tutor-1');
   const [students] = useState<Student[]>([
     {
       id: 'student-1',
-      name: 'Emma Thompson',
-      email: 'emma.thompson@student.edu',
+      name: 'Arora, Sampoorna',
+      family: 'Arora',
+      email: '',
+      mobilePhone: '',
+      homePhone: '',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
       enrollmentId: 'ST2024001',
       grade: '12',
-      classes: ['class-1', 'class-2'],
+      classes: ['class-1'],
       overallGrade: 85,
       attendance: 92,
       assignments: { completed: 8, total: 10 },
-      status: 'active'
+      status: 'active',
+      type: 'Child'
     },
     {
       id: 'student-2',
-      name: 'James Rodriguez',
-      email: 'james.rodriguez@student.edu',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      name: 'Askary, Natasha',
+      family: 'Askary',
+      email: 'agbi@hotmail.com.au',
+      mobilePhone: '0422219973',
+      homePhone: '',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
       enrollmentId: 'ST2024002',
       grade: '11',
       classes: ['class-1'],
-      overallGrade: 78,
-      attendance: 88,
-      assignments: { completed: 6, total: 8 },
-      status: 'active'
+      overallGrade: 88,
+      attendance: 95,
+      assignments: { completed: 7, total: 8 },
+      status: 'active',
+      type: 'Child'
     },
     {
       id: 'student-3',
-      name: 'Sarah Chen',
-      email: 'sarah.chen@student.edu',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+      name: 'Dean, Xavier',
+      family: 'Dean',
+      email: '',
+      mobilePhone: '',
+      homePhone: '',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
       enrollmentId: 'ST2024003',
-      grade: '12',
-      classes: ['class-2'],
-      overallGrade: 72,
-      attendance: 76,
-      assignments: { completed: 4, total: 8 },
-      status: 'warning'
+      grade: '10',
+      classes: ['class-1'],
+      overallGrade: 91,
+      attendance: 97,
+      assignments: { completed: 9, total: 10 },
+      status: 'active',
+      type: 'Child'
     },
     {
       id: 'student-4',
-      name: 'Michael Park',
-      email: 'michael.park@student.edu',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      name: 'Roach, Tait',
+      family: 'Roach',
+      email: '',
+      mobilePhone: '0490670458',
+      homePhone: '',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       enrollmentId: 'ST2024004',
       grade: '11',
-      classes: ['class-1', 'class-2'],
-      overallGrade: 91,
-      attendance: 95,
+      classes: ['class-2'],
+      overallGrade: 79,
+      attendance: 86,
+      assignments: { completed: 6, total: 8 },
+      status: 'active',
+      type: 'Child'
+    },
+    {
+      id: 'student-5',
+      name: 'Song, Sophia',
+      family: 'Song',
+      email: 'sophiasonghi@gmail.com',
+      mobilePhone: '+61 416 526 598',
+      homePhone: '',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+      enrollmentId: 'ST2024005',
+      grade: '12',
+      classes: ['class-2'],
+      overallGrade: 94,
+      attendance: 98,
       assignments: { completed: 10, total: 10 },
-      status: 'active'
+      status: 'active',
+      type: 'Child'
+    },
+    {
+      id: 'student-6',
+      name: 'Sutton, Ethan',
+      family: 'Sutton',
+      email: '',
+      mobilePhone: '',
+      homePhone: '',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+      enrollmentId: 'ST2024006',
+      grade: '10',
+      classes: ['class-1'],
+      overallGrade: 76,
+      attendance: 82,
+      assignments: { completed: 5, total: 8 },
+      status: 'warning',
+      type: 'Child'
     }
   ]);
 

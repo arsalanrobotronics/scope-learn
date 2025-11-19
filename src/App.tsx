@@ -50,6 +50,11 @@ import TutorAssignments from "./pages/tutor/TutorAssignments";
 import TutorResources from "./pages/tutor/TutorResources";
 import TutorMessaging from "./pages/tutor/TutorMessaging";
 import TutorAttendance from "./pages/tutor/TutorAttendance";
+import TutorCalendar from "./pages/tutor/TutorCalendar";
+import TutorHours from "./pages/tutor/TutorHours";
+import TutorAvailability from "./pages/tutor/TutorAvailability";
+import TutorLessonRequests from "./pages/tutor/TutorLessonRequests";
+import TutorProfile from "./pages/tutor/TutorProfile";
 
 // Parent pages
 import ParentDashboard from "./pages/parent/ParentDashboard";
@@ -67,7 +72,6 @@ import ParentAttendance from "./pages/parent/ParentAttendance";
 import ProfileSettings from "./pages/profile/ProfileSettings";
 import AdminProfile from "./pages/admin/AdminProfile";
 import StudentProfile from "./pages/student/StudentProfile";
-import TutorProfile from "./pages/tutor/TutorProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -209,6 +213,11 @@ const App = () => (
                         <TutorDashboard />
                       </ProtectedRoute>
                     } />
+                    <Route path="calendar" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorCalendar />
+                      </ProtectedRoute>
+                    } />
                     <Route path="classes" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorClasses />
@@ -224,6 +233,11 @@ const App = () => (
                         <TutorAssignments />
                       </ProtectedRoute>
                     } />
+                    <Route path="lesson-requests" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorLessonRequests />
+                      </ProtectedRoute>
+                    } />
                     <Route path="resources" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorResources />
@@ -237,6 +251,16 @@ const App = () => (
                     <Route path="attendance" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorAttendance />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="hours" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorHours />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="availability" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorAvailability />
                       </ProtectedRoute>
                     } />
                     <Route path="profile" element={
