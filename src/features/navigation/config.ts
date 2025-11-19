@@ -12,7 +12,8 @@ import {
   Bell,
   BarChart3,
   Receipt,
-  ClipboardCheck
+  ClipboardCheck,
+  Clock
 } from 'lucide-react';
 import { UserRole } from '@/lib/types/auth';
 
@@ -122,6 +123,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           label: 'Dashboard',
           description: 'Your teaching overview'
         },
+        { 
+          href: '/tutor/calendar', 
+          icon: Calendar, 
+          label: 'Calendar',
+          description: 'View your lesson schedule'
+        },
       ]
     },
     {
@@ -134,6 +141,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           description: 'Your assigned courses'
         },
         { 
+          href: '/tutor/students', 
+          icon: GraduationCap, 
+          label: 'Students',
+          description: 'View student progress'
+        },
+        { 
           href: '/tutor/assignments', 
           icon: PenTool, 
           label: 'Assignments',
@@ -141,16 +154,34 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           badge: 3
         },
         { 
-          href: '/tutor/students', 
-          icon: GraduationCap, 
-          label: 'Students',
-          description: 'View student progress'
+          href: '/tutor/lesson-requests', 
+          icon: Bell, 
+          label: 'Lesson Requests',
+          description: 'Review incoming requests',
+          badge: 2
         },
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
         { 
           href: '/tutor/attendance', 
           icon: ClipboardCheck, 
           label: 'Attendance',
-          description: 'Mark attendance and track hours'
+          description: 'Mark student attendance'
+        },
+        { 
+          href: '/tutor/hours', 
+          icon: Receipt, 
+          label: 'Hours & Payments',
+          description: 'Track hours and invoices'
+        },
+        { 
+          href: '/tutor/availability', 
+          icon: Clock, 
+          label: 'Availability',
+          description: 'Set your teaching schedule'
         },
       ]
     },
