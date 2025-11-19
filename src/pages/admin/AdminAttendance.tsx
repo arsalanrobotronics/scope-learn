@@ -35,6 +35,17 @@ interface TimesheetOverview {
   amount: number;
 }
 
+interface StudentAttendanceRecord {
+  id: string;
+  studentName: string;
+  className: string;
+  tutor: string;
+  date: string;
+  time: string;
+  mode: 'online' | 'offline';
+  status: 'present' | 'absent' | 'late';
+}
+
 export default function AdminAttendance() {
   const [searchTerm, setSearchTerm] = useState('');
   const [classFilter, setClassFilter] = useState('all');
@@ -118,11 +129,81 @@ export default function AdminAttendance() {
     }
   ]);
 
+  const [studentAttendanceData] = useState<StudentAttendanceRecord[]>([
+    {
+      id: 'sa-1',
+      studentName: 'Ahmed Hassan',
+      className: 'Advanced Mathematics Grade 12',
+      tutor: 'Dr. Sarah Johnson',
+      date: '2024-01-15',
+      time: '09:00 AM',
+      mode: 'online',
+      status: 'present'
+    },
+    {
+      id: 'sa-2',
+      studentName: 'Fatima Ali',
+      className: 'Advanced Mathematics Grade 12',
+      tutor: 'Dr. Sarah Johnson',
+      date: '2024-01-15',
+      time: '09:00 AM',
+      mode: 'online',
+      status: 'present'
+    },
+    {
+      id: 'sa-3',
+      studentName: 'Omar Khalid',
+      className: 'Advanced Mathematics Grade 12',
+      tutor: 'Dr. Sarah Johnson',
+      date: '2024-01-15',
+      time: '09:00 AM',
+      mode: 'online',
+      status: 'late'
+    },
+    {
+      id: 'sa-4',
+      studentName: 'Aisha Mohammed',
+      className: 'Physics Grade 11',
+      tutor: 'Prof. Michael Chen',
+      date: '2024-01-15',
+      time: '02:00 PM',
+      mode: 'offline',
+      status: 'present'
+    },
+    {
+      id: 'sa-5',
+      studentName: 'Hassan Ibrahim',
+      className: 'Physics Grade 11',
+      tutor: 'Prof. Michael Chen',
+      date: '2024-01-15',
+      time: '02:00 PM',
+      mode: 'offline',
+      status: 'absent'
+    },
+    {
+      id: 'sa-6',
+      studentName: 'Layla Ahmed',
+      className: 'Physics Grade 11',
+      tutor: 'Prof. Michael Chen',
+      date: '2024-01-15',
+      time: '02:00 PM',
+      mode: 'offline',
+      status: 'present'
+    }
+  ]);
+
   const filteredAttendance = attendanceData.filter(record => {
     const matchesSearch = record.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          record.tutor.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || record.status === statusFilter;
     return matchesSearch && matchesStatus;
+  });
+
+  const filteredStudentAttendance = studentAttendanceData.filter(record => {
+    const matchesSearch = record.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         record.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         record.tutor.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
   });
 
   const getStatusColor = (status: string) => {
@@ -224,6 +305,7 @@ export default function AdminAttendance() {
       <Tabs defaultValue="attendance" className="space-y-4">
         <TabsList>
           <TabsTrigger value="attendance">Attendance Records</TabsTrigger>
+          <TabsTrigger value="students">Student Attendance</TabsTrigger>
           <TabsTrigger value="timesheets">Tutor Timesheets</TabsTrigger>
         </TabsList>
 
@@ -323,6 +405,78 @@ export default function AdminAttendance() {
                         <Button size="sm" variant="ghost">
                           View Details
                         </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="students" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Student Attendance Records</CardTitle>
+                  <CardDescription>View individual student attendance marked by tutors</CardDescription>
+                </div>
+                <Button onClick={handleExportAttendance}>
+                  <Download className="mr-2 h-4 w-4" />
+                  Export
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4">
+                <Input
+                  placeholder="Search by student, class, or tutor..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="max-w-sm"
+                />
+              </div>
+
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Student Name</TableHead>
+                    <TableHead>Class</TableHead>
+                    <TableHead>Tutor</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Time</TableHead>
+                    <TableHead>Mode</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredStudentAttendance.map((record) => (
+                    <TableRow key={record.id}>
+                      <TableCell className="font-medium">{record.studentName}</TableCell>
+                      <TableCell>{record.className}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {record.tutor}
+                      </TableCell>
+                      <TableCell>{record.date}</TableCell>
+                      <TableCell>{record.time}</TableCell>
+                      <TableCell>
+                        <Badge variant={record.mode === 'online' ? 'default' : 'secondary'}>
+                          {record.mode}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          className={
+                            record.status === 'present'
+                              ? 'bg-green-500/10 text-green-700 dark:text-green-400'
+                              : record.status === 'late'
+                              ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400'
+                              : 'bg-red-500/10 text-red-700 dark:text-red-400'
+                          }
+                        >
+                          {record.status}
+                        </Badge>
                       </TableCell>
                     </TableRow>
                   ))}
