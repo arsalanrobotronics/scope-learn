@@ -91,8 +91,9 @@ export default function TutorProfile() {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profile Information</TabsTrigger>
+          <TabsTrigger value="employment">Employment Details</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>
         </TabsList>
@@ -228,6 +229,121 @@ export default function TutorProfile() {
               <Button onClick={handleProfileUpdate}>
                 <Save className="mr-2 h-4 w-4" />
                 Save Changes
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="employment" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Employment Details</CardTitle>
+              <CardDescription>
+                View and manage your employment information and qualifications
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="abn">ABN Number</Label>
+                  <Input
+                    id="abn"
+                    value="13837171523"
+                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="position">Position</Label>
+                  <Input
+                    id="position"
+                    placeholder="Mathematics Tutor"
+                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="birthdate">Birth Date</Label>
+                  <Input
+                    id="birthdate"
+                    type="date"
+                    defaultValue="1980-11-22"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="hiredate">Hire Date</Label>
+                  <Input
+                    id="hiredate"
+                    type="date"
+                    defaultValue="2025-07-30"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="wagetype">Lesson Wage Type</Label>
+                  <Select defaultValue="service-list">
+                    <SelectTrigger id="wagetype">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="service-list">Service List Wage</SelectItem>
+                      <SelectItem value="hourly">Hourly Rate</SelectItem>
+                      <SelectItem value="fixed">Fixed Rate</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="wagetier">Wage Tier</Label>
+                  <Select defaultValue="t5">
+                    <SelectTrigger id="wagetier">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="t1">T1 - Entry Level</SelectItem>
+                      <SelectItem value="t2">T2 - Intermediate</SelectItem>
+                      <SelectItem value="t3">T3 - Experienced</SelectItem>
+                      <SelectItem value="t4">T4 - Senior</SelectItem>
+                      <SelectItem value="t5">T5 - Expert</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subjects">Subjects</Label>
+                <Textarea
+                  id="subjects"
+                  rows={3}
+                  defaultValue="HSC Maths Advanced, HSC Maths Extension 1, HSC Maths Standard, Y7-10 Maths"
+                  placeholder="List your teaching subjects..."
+                />
+                <p className="text-sm text-muted-foreground">
+                  Comma-separated list of subjects you are qualified to teach
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="calendar-color">Calendar Color</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="calendar-color"
+                    type="color"
+                    defaultValue="#1E7838"
+                    className="w-20 h-10"
+                  />
+                  <span className="text-sm text-muted-foreground">#1E7838</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  This color will be used to identify your lessons in the calendar
+                </p>
+              </div>
+
+              <Button onClick={handleProfileUpdate}>
+                <Save className="mr-2 h-4 w-4" />
+                Save Employment Details
               </Button>
             </CardContent>
           </Card>
