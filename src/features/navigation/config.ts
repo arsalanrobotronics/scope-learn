@@ -13,7 +13,8 @@ import {
   BarChart3,
   Receipt,
   ClipboardCheck,
-  Clock
+  Clock,
+  ClipboardList
 } from 'lucide-react';
 import { UserRole } from '@/lib/types/auth';
 
@@ -165,11 +166,17 @@ export const navByRole: Record<UserRole, NavSection[]> = {
     {
       title: 'Management',
       items: [
-        { 
-          href: '/tutor/attendance', 
-          icon: ClipboardCheck, 
+        {
+          href: '/tutor/attendance',
+          icon: ClipboardCheck,
           label: 'Attendance',
           description: 'Mark student attendance'
+        },
+        {
+          href: '/tutor/attendance-records',
+          icon: ClipboardList,
+          label: 'Attendance Records',
+          description: 'View attendance history'
         },
         { 
           href: '/tutor/hours', 

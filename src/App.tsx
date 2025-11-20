@@ -50,6 +50,7 @@ import TutorAssignments from "./pages/tutor/TutorAssignments";
 import TutorResources from "./pages/tutor/TutorResources";
 import TutorMessaging from "./pages/tutor/TutorMessaging";
 import TutorAttendance from "./pages/tutor/TutorAttendance";
+import TutorAttendanceRecords from "./pages/tutor/TutorAttendanceRecords";
 import TutorCalendar from "./pages/tutor/TutorCalendar";
 import TutorHours from "./pages/tutor/TutorHours";
 import TutorAvailability from "./pages/tutor/TutorAvailability";
@@ -216,6 +217,16 @@ const App = () => (
                     <Route path="calendar" element={
                       <ProtectedRoute allowedRoles={['tutor']}>
                         <TutorCalendar />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="attendance" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorAttendance />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="attendance-records" element={
+                      <ProtectedRoute allowedRoles={['tutor']}>
+                        <TutorAttendanceRecords />
                       </ProtectedRoute>
                     } />
                     <Route path="classes" element={
