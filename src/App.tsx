@@ -32,6 +32,7 @@ import AdminBilling from "./pages/admin/AdminBilling";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminAttendance from "./pages/admin/AdminAttendance";
+import AdminCalendar from "./pages/admin/AdminCalendar";
 
 // Student pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -114,6 +115,11 @@ const App = () => (
                     <Route path="analytics" element={
                       <ProtectedRoute allowedRoles={['admin']}>
                         <AdminAnalytics />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="calendar" element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminCalendar />
                       </ProtectedRoute>
                     } />
                     <Route path="classes" element={

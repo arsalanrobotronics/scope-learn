@@ -48,6 +48,12 @@ export const navByRole: Record<UserRole, NavSection[]> = {
           label: 'Analytics',
           description: 'Detailed reports and insights'
         },
+        { 
+          href: '/admin/calendar', 
+          icon: Calendar, 
+          label: 'Calendar',
+          description: 'Manage all tutoring sessions'
+        },
       ]
     },
     {
