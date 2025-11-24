@@ -9,7 +9,7 @@ import {
   BookOpen, 
   Star, 
   ArrowRight
-} from "lucide-react";
+} from "lucide-react"; 
 import { Link } from "react-router-dom";
 import ChatWidget from "@/components/common/ChatWidget";
 import { ModernNavbar } from "@/components/common/ModernNavbar";
@@ -120,27 +120,29 @@ export default function PublicHome() {
       {/* Stats Section */}
       <section className="py-16 px-4 bg-card/50 border-y border-border/50">
         <div className="container mx-auto">
-          <StaggeredReveal>
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center"
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
+          <ScrollReveal direction="up">
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+              {stats.map((stat, index) => (
                 <motion.div 
-                  className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2"
-                  initial={{ scale: 0.5, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  key={index} 
+                  className="text-center flex-shrink-0"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {stat.number}
+                  <motion.div 
+                    className="text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    {stat.number}
+                  </motion.div>
+                  <div className="text-muted-foreground font-medium text-sm md:text-base">{stat.label}</div>
                 </motion.div>
-                <div className="text-muted-foreground font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </StaggeredReveal>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
