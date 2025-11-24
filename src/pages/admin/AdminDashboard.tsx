@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import DashboardAlerts from '@/components/admin/DashboardAlerts';
 
 export default function AdminDashboard() {
   const stats = [
@@ -119,6 +120,9 @@ export default function AdminDashboard() {
           );
         })}
       </div>
+
+      {/* Dashboard Alerts */}
+      <DashboardAlerts />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         {/* Recent Activity */}

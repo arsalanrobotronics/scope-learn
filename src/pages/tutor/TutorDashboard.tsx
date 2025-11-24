@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, FileText, Clock, BookOpen, MessageSquare, Plus } from "lucide-react";
+import { Calendar, Users, FileText, Clock, BookOpen, MessageSquare, Plus, Mail, Video, ExternalLink, Palette, BookMarked, Library } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -112,6 +112,37 @@ const TutorDashboard = () => {
     pendingAssignments: 6,
     todaysClasses: 2,
   };
+
+  const quickTools = [
+    { 
+      name: 'MS Teams', 
+      icon: Video, 
+      url: 'https://teams.microsoft.com', 
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100 dark:bg-blue-950'
+    },
+    { 
+      name: 'Email', 
+      icon: Mail, 
+      url: 'mailto:', 
+      color: 'text-green-600',
+      bgColor: 'bg-green-100 dark:bg-green-950'
+    },
+    { 
+      name: 'Canva', 
+      icon: Palette, 
+      url: 'https://www.canva.com', 
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100 dark:bg-purple-950'
+    },
+    { 
+      name: 'Library Resources', 
+      icon: BookMarked, 
+      url: '/tutor/resources', 
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100 dark:bg-orange-950'
+    },
+  ];
 
   const upcomingClasses = [
     {
@@ -224,50 +255,85 @@ const TutorDashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="border-primary/20 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalStudents}</div>
             <p className="text-xs text-muted-foreground">Across all classes</p>
           </CardContent>
         </Card>
-
-        <Card>
+        
+        <Card className="border-success/20 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Classes</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <BookOpen className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.activeClasses}</div>
-            <p className="text-xs text-muted-foreground">Currently teaching</p>
+            <p className="text-xs text-muted-foreground">This semester</p>
           </CardContent>
         </Card>
-
-        <Card>
+        
+        <Card className="border-warning/20 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending Assignments</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <FileText className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.pendingAssignments}</div>
-            <p className="text-xs text-muted-foreground">Awaiting review</p>
+            <p className="text-xs text-muted-foreground">To review</p>
           </CardContent>
         </Card>
-
-        <Card>
+        
+        <Card className="border-secondary/20 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Today's Classes</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Calendar className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.todaysClasses}</div>
-            <p className="text-xs text-muted-foreground">Scheduled for today</p>
+            <p className="text-xs text-muted-foreground">Scheduled</p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Quick Tools Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Library className="h-5 w-5" />
+            Quick Tools
+          </CardTitle>
+          <CardDescription>Access frequently used tools and resources</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {quickTools.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <a
+                  key={tool.name}
+                  href={tool.url}
+                  target={tool.url.startsWith('http') ? '_blank' : '_self'}
+                  rel={tool.url.startsWith('http') ? 'noopener noreferrer' : ''}
+                  className="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent transition-colors group"
+                >
+                  <div className={`p-2 rounded-lg ${tool.bgColor} group-hover:scale-110 transition-transform`}>
+                    <Icon className={`h-5 w-5 ${tool.color}`} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{tool.name}</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Upcoming Classes */}
