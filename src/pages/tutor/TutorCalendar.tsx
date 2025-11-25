@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,9 +26,7 @@ export default function TutorCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isAddLessonOpen, setIsAddLessonOpen] = useState(false);
-
-  // Mock lesson data
-  const [lessons] = useState<Record<string, LessonEvent[]>>({
+  const [lessons, setLessons] = useState<Record<string, LessonEvent[]>>({
     '2025-01-15': [
       { id: '1', studentName: 'Sampoorna Arora', time: '04:00 PM', duration: 1, mode: 'online', status: 'scheduled', color: '#1E7838' },
       { id: '2', studentName: 'Xavier Dean', time: '04:30 PM', duration: 1.5, mode: 'online', status: 'scheduled', color: '#2563eb' },
@@ -56,6 +54,23 @@ export default function TutorCalendar() {
   const monthEnd = endOfMonth(currentDate);
   const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? window.localStorage.getItem('tutor-lessons') : null;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as Record<string, LessonEvent[]>;
+        setLessons(prev => ({ ...prev, ...parsed }));
+      } catch {
+        // ignore parse errors
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('tutor-lessons', JSON.stringify(lessons));
+  }, [lessons]);
+
   const getDayLessons = (day: Date) => {
     const dateKey = format(day, 'yyyy-MM-dd');
     return lessons[dateKey] || [];
@@ -63,6 +78,34 @@ export default function TutorCalendar() {
 
   const handlePrevMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const handleNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+  const getStudentDisplayName = (value: string) => {
+    switch (value) {
+      case 'sampoorna':
+        return 'Sampoorna Arora';
+      case 'xavier':
+        return 'Xavier Dean';
+      case 'ethan':
+        return 'Ethan Sutton';
+      case 'natasha':
+        return 'Natasha Askary';
+      case 'sophia':
+        return 'Sophia Song';
+      default:
+        return value;
+    }
+  };
+
+  const getLessonColor = (day: Date) => {
+    const today = new Date();
+    const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    if (dayStart < todayStart) {
+      return '#9ca3af';
+    }
+    return '#16a34a';
+  };
 
   const handleAddLesson = () => {
     if (!newLesson.student || !newLesson.date || !newLesson.time) {
@@ -73,6 +116,23 @@ export default function TutorCalendar() {
       });
       return;
     }
+    const dateKey = newLesson.date;
+    const day = new Date(newLesson.date);
+    const color = getLessonColor(day);
+    const lesson: LessonEvent = {
+      id: `${Date.now()}`,
+      studentName: getStudentDisplayName(newLesson.student),
+      time: newLesson.time,
+      duration: parseFloat(newLesson.duration),
+      mode: newLesson.mode,
+      status: 'scheduled',
+      color,
+    };
+
+    setLessons(prev => ({
+      ...prev,
+      [dateKey]: prev[dateKey] ? [...prev[dateKey], lesson] : [lesson],
+    }));
 
     toast({
       title: "Lesson Added",
@@ -224,8 +284,9 @@ export default function TutorCalendar() {
                           key={lesson.id}
                           className="text-[10px] rounded px-1 py-0.5 truncate text-white"
                           style={{ backgroundColor: lesson.color }}
+                          title={`${lesson.studentName} • ${lesson.time} • ${lesson.duration}h • ${lesson.mode}`}
                         >
-                          {lesson.time.split(' ')[0]} {lesson.studentName.split(' ')[1]}
+                          {lesson.time} {lesson.studentName.split(' ')[0]}
                         </div>
                       ))}
                       {dayLessons.length > 2 && (
